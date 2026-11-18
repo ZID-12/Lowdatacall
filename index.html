@@ -9,62 +9,76 @@
 <link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="theme-color" content="#0f766e">
 <style>
-:root{--bg:#f4f7f6;--fg:#10211f;--mut:#5b6b68;--card:#fff;--acc:#0f766e;--onacc:#fff;--bd:#d9e2df;--warn:#b45309;--off:#dc2626;--ok:#16a34a}
-@media(prefers-color-scheme:dark){:root{--bg:#0b1412;--fg:#e8f1ef;--mut:#8aa19c;--card:#13211e;--acc:#2dd4bf;--onacc:#04201c;--bd:#243430;--warn:#f59e0b;--off:#f87171;--ok:#4ade80}}
-*{box-sizing:border-box}
-html,body{height:100%}
+:root{--bg:#f4f7f6;--fg:#10211f;--mut:#5b6b68;--card:#fff;--acc:#0f766e;--onacc:#fff;--bd:#d9e2df;--warn:#b45309;--off:#dc2626}
+@media(prefers-color-scheme:dark){:root{--bg:#0b1412;--fg:#e8f1ef;--mut:#8aa19c;--card:#13211e;--acc:#2dd4bf;--onacc:#04201c;--bd:#243430;--warn:#f59e0b;--off:#f87171}}
+*{box-sizing:border-box}html,body{height:100%}
 body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--fg);display:flex;flex-direction:column;height:100dvh}
 header{display:flex;align-items:center;gap:12px;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));border-bottom:1px solid var(--bd);background:var(--card)}
 .brand{display:flex;align-items:center;gap:9px;font-weight:700;font-size:18px;letter-spacing:-.2px;margin-right:auto}
-.brand em{font-style:normal;font-weight:400;color:var(--mut)}
-.logo{width:30px;height:30px;flex:none}
+.brand em{font-style:normal;font-weight:400;color:var(--mut)}.logo{width:30px;height:30px;flex:none}
 #roominfo{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mut)}
 code{background:var(--bg);border:1px solid var(--bd);padding:2px 8px;border-radius:6px;color:var(--fg)}
 button,select,input{font:inherit;color:var(--fg)}
-.btn{padding:8px 14px;border:1px solid var(--bd);border-radius:10px;background:var(--card);cursor:pointer}
+.btn{padding:9px 14px;border:1px solid var(--bd);border-radius:10px;background:var(--card);cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:7px}
 .btn.primary{background:var(--acc);color:var(--onacc);border-color:var(--acc);font-weight:600}
 .btn.big{padding:13px 28px;font-size:16px;width:100%}
-#join{flex:1;overflow:auto;max-width:520px;margin:0 auto;padding:22px 18px 30px;width:100%}
-.hero{text-align:center;margin-bottom:16px}
-.hero .logo{width:68px;height:68px;margin-bottom:6px}
-.hero h1{margin:0;font-size:30px;letter-spacing:-.6px}.hero h1 span{font-weight:400;color:var(--mut)}
-.tag{font-size:17px;color:var(--acc);font-weight:600;margin:2px 0 8px}
-.hero p{margin:0;color:var(--mut)}
-.how{list-style:none;padding:0;margin:16px 0;display:grid;gap:8px}
-.how li{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 14px;font-size:14px;color:var(--mut)}
-.how b{display:block;color:var(--fg)}
-.usage{width:100%;border-collapse:collapse;font-size:13px;background:var(--card);border:1px solid var(--bd);border-radius:12px;overflow:hidden;margin-bottom:6px}
-.usage th,.usage td{padding:7px 12px;text-align:left;border-bottom:1px solid var(--bd)}
-.usage th{color:var(--mut);font-weight:500}.usage tr:last-child td{border:0}.usage td:last-child{text-align:right;font-variant-numeric:tabular-nums}
-.fine{font-size:12px;color:var(--mut);margin:6px 2px 14px}
-label.opt{display:flex;gap:8px;align-items:center;margin:10px 0 14px}
+.ic{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.slash{display:none}.off .slash{display:inline}
+#join{flex:1;overflow:auto;max-width:520px;margin:0 auto;padding:18px 18px 30px;width:100%}
+.hero{text-align:center;margin-bottom:14px}.hero .logo{width:60px;height:60px;margin-bottom:4px}
+.hero h1{margin:0;font-size:28px;letter-spacing:-.6px}.hero h1 span{font-weight:400;color:var(--mut)}
+.tag{font-size:17px;color:var(--acc);font-weight:600;margin:2px 0 6px}.hero p{margin:0;color:var(--mut);font-size:14px}
+.panel{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px}
+.meet{font-size:13px;color:var(--mut);margin-bottom:10px}.meet a{color:var(--acc)}
+.fld{display:block;font-size:13px;color:var(--mut);margin-bottom:10px}
+.fld select{display:block;width:100%;margin-top:4px;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hint{font-size:13px;color:var(--acc);background:var(--bg);border-radius:10px;padding:8px 10px;margin-bottom:10px}
+label.opt{display:flex;gap:8px;align-items:center;margin:6px 0;font-size:14px}
+.fine{font-size:12px;color:var(--mut);margin:6px 2px}
+details{margin-top:12px;background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:8px 14px;font-size:14px}
+summary{cursor:pointer;color:var(--mut)}
+.how{list-style:none;padding:0;margin:8px 0;display:grid;gap:6px;font-size:13px;color:var(--mut)}.how b{color:var(--fg)}
+.usage{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0}
+.usage th,.usage td{padding:5px 8px;text-align:left;border-bottom:1px solid var(--bd)}.usage th{color:var(--mut);font-weight:500}.usage td:last-child{text-align:right}
 #app{flex:1;min-height:0;display:flex;flex-direction:column}
 #grid{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:8px;padding:8px;align-content:start}
-.tile{position:relative;background:#050b0a;border-radius:12px;overflow:hidden;aspect-ratio:16/9}
-.tile video{width:100%;height:100%;object-fit:contain}
-.tile span{position:absolute;left:8px;bottom:7px;font-size:12px;color:#fff;background:#0009;padding:1px 8px;border-radius:7px}
-.mirror video{transform:scaleX(-1)}
-#diag{padding:0 16px;font-size:13px;color:var(--warn)}#diag:empty{display:none}
-#budgetbar{display:flex;flex-wrap:wrap;gap:6px 14px;padding:6px 16px;background:var(--card);border-top:1px solid var(--bd);font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}
-#budgetbar b{display:block;font-size:14px;color:var(--fg);text-transform:none;letter-spacing:0;font-variant-numeric:tabular-nums}
-#budgetbar .warn b{color:var(--warn)}
-#stats{display:flex;flex-wrap:wrap;gap:6px 18px;padding:8px 16px;border-top:1px solid var(--bd);background:var(--card)}
-#stats div{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}
-#stats b{display:block;font-size:15px;color:var(--fg);text-transform:none;letter-spacing:0;font-variant-numeric:tabular-nums}
-#net{flex-basis:100%;font-size:12px;color:var(--mut)}
-#cats{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--mut);padding:0 16px 6px;background:var(--card)}
-#cats span{font-variant-numeric:tabular-nums}
-details{background:var(--card);border-top:1px solid var(--bd);padding:6px 16px;font-size:14px}
-summary{cursor:pointer;color:var(--mut)}
-.set{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:8px 0}
-select,input[type=number]{padding:7px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg)}
-#bar{display:flex;justify-content:center;gap:8px;padding:8px 10px;padding-bottom:max(8px,env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--bd)}
-.ctl{flex:1;max-width:120px;display:flex;flex-direction:column;align-items:center;gap:1px;padding:7px 4px;border:1px solid var(--bd);border-radius:12px;background:var(--bg);cursor:pointer;font-size:11px;color:var(--mut)}
-.ctl i{font-style:normal;font-size:19px;line-height:1.2}
-.ctl.on{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
-.ctl.danger{color:var(--off);border-color:var(--off)}
+.tile{position:relative;background:#050b0a;border-radius:12px;overflow:hidden;aspect-ratio:16/9;cursor:pointer;min-height:0}
+.tile video{width:100%;height:100%;object-fit:contain;display:block}
+.tile .lbl{position:absolute;left:8px;bottom:7px;font-size:12px;color:#fff;background:#0009;padding:1px 8px;border-radius:7px}
+.tile .fs{position:absolute;right:6px;top:6px;width:34px;height:34px;padding:0;border:0;border-radius:9px;background:#0008;color:#fff;display:grid;place-items:center;cursor:pointer}
+.tile:fullscreen{border-radius:0;aspect-ratio:auto}.mirror video{transform:scaleX(-1)}
+#grid.focus{grid-template-columns:repeat(auto-fill,minmax(130px,150px));grid-template-rows:minmax(0,1fr) auto;align-content:stretch;justify-content:start}
+#grid.focus .tile{height:86px;aspect-ratio:auto}
+#grid.focus .tile.pin{grid-column:1/-1;grid-row:1;height:auto}
+#grid.focus .tile:not(.pin) .fs{display:none}
+.empty{grid-column:1/-1;text-align:center;padding:26px 16px;background:var(--card);border:1px dashed var(--bd);border-radius:12px;color:var(--mut)}
+.empty b{display:block;color:var(--fg);font-size:17px;margin-bottom:4px}.empty .btn{margin-top:12px}
+#diag{padding:0 16px 4px;font-size:13px;color:var(--warn)}#diag:empty{display:none}
+#alert{margin:0 8px 8px;padding:10px 12px;border-radius:12px;font-size:14px;background:#fef3c7;color:#451a03;border:1px solid #f59e0b}
+#alert[data-lvl=red]{background:#fee2e2;color:#450a0a;border-color:#ef4444}
+#alert .btn{padding:6px 12px;color:#111;background:#fff;border-color:#0003}
+.rowb{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 2px}
+.dbar{position:relative;display:flex;justify-content:space-between;gap:10px;margin:0 8px 8px;padding:8px 12px 12px;width:calc(100% - 16px);border:1px solid var(--bd);border-radius:12px;background:var(--card);font-size:13px;cursor:pointer;text-align:left;overflow:hidden}
+.dbar span:first-child{font-weight:600}.dbar span:last-child{color:var(--mut)}
+.dbar i,.bar i{position:absolute;left:0;bottom:0;height:5px;width:0;background:var(--acc);transition:width .6s}
+[data-lvl=amber] i,i[data-lvl=amber]{background:#f59e0b}[data-lvl=red] i,i[data-lvl=red]{background:#ef4444}
+#bar{display:flex;justify-content:center;gap:6px;padding:8px 8px;padding-bottom:max(8px,env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--bd)}
+.ctl{flex:1;max-width:92px;display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 2px;border:1px solid var(--bd);border-radius:12px;background:var(--bg);cursor:pointer;font-size:11px;color:var(--fg)}
+.ctl.on{background:var(--acc);border-color:var(--acc);color:var(--onacc)}.ctl.off{color:var(--off);border-color:var(--off)}
+.ctl.danger{background:var(--off);border-color:var(--off);color:#fff}
+.sheet{position:fixed;inset:0;background:#0008;display:flex;align-items:flex-end;justify-content:center;z-index:20}
+.box{background:var(--card);width:100%;max-width:480px;border-radius:18px 18px 0 0;padding:18px;padding-bottom:max(18px,env(safe-area-inset-bottom));max-height:90dvh;overflow:auto}
+@media(min-width:700px){.sheet{align-items:center}.box{border-radius:18px}}
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-size:17px}
+.x{border:0;background:none;font-size:20px;cursor:pointer;padding:4px 8px}.rowb .btn{flex:1}
+#link{width:100%;padding:10px;border:1px solid var(--bd);border-radius:10px;background:var(--bg)}
+.big{font-size:22px;font-weight:700}
+.bar{position:relative;height:8px;background:var(--bg);border-radius:6px;overflow:hidden;margin:8px 0 12px}.bar i{height:8px}
+.kv{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0 4px}
+.kv div{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}.kv b{display:block;font-size:15px;color:var(--fg);text-transform:none;letter-spacing:0}
 [hidden]{display:none!important}
-@media(max-width:480px){#roominfo code{display:none}.hero h1{font-size:26px}}
+@media(max-width:480px){#roominfo code{display:none}.hero h1{font-size:25px}}
 </style>
 </head>
 <body>
@@ -75,7 +89,7 @@ select,input[type=number]{padding:7px 10px;border:1px solid var(--bd);border-rad
 
 <header>
   <div class="brand"><svg class="logo"><use href="#logo"/></svg><span>LowData <em>Call</em></span></div>
-  <div id="roominfo" hidden><code id="room"></code><button id="copy" class="btn primary">Copy invite link</button></div>
+  <div id="roominfo" hidden><code id="room"></code><button id="invite" class="btn primary"><svg class="ic" viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg>Invite</button></div>
 </header>
 
 <main id="join">
@@ -83,79 +97,84 @@ select,input[type=number]{padding:7px 10px;border:1px solid var(--bd);border-rad
     <svg class="logo"><use href="#logo"/></svg>
     <h1>LowData <span>Call</span></h1>
     <div class="tag">Same call. Less data.</div>
-    <p>Video meetings built for people on mobile data. Works in your browser on phone and laptop. Nothing to install.</p>
+    <p>Video meetings built for mobile data. Works in your browser on phone and laptop. Nothing to install.</p>
   </div>
-  <ul class="how">
-    <li><b>You control the data</b>Set a private budget. Quality adapts. Nothing about your allowance is shared with anyone.</li>
-    <li><b>See exactly what you spend</b>Per-category breakdown: audio, video, slides. Sent and received, measured from WebRTC stats.</li>
-    <li><b>Direct and encrypted</b>Audio and video go straight between devices. On strict mobile networks they use an encrypted relay instead.</li>
-  </ul>
-  <table class="usage">
-    <tr><th>Mode</th><th>Quality</th><th>Up to, per hour</th></tr>
-    <tr><td>Audio only</td><td>voice</td><td>~30 MB</td></tr>
-    <tr><td>Saver</td><td>360p · 15 fps</td><td>~165 MB</td></tr>
-    <tr><td>Balanced</td><td>540p · 20 fps</td><td>~390 MB</td></tr>
-    <tr><td>HD</td><td>720p · 30 fps</td><td>~1,400 MB</td></tr>
-  </table>
-  <div class="fine">Upper limits for a 1-to-1 call, upload plus download. Real use is usually lower. These are theoretical ceilings, not measured carrier bills.</div>
-  <label class="opt" style="margin-bottom:4px"><input type="checkbox" id="mobile"> I am on mobile data (starts in Saver quality)</label>
-  <label class="opt"><input type="checkbox" id="camoff"> Join with camera off (uses the least data)</label>
-  <button id="go" class="btn primary big">Join call</button>
-  <button id="test" class="btn big" style="margin-top:8px">Test my connection</button>
-  <div id="testout" class="fine" style="text-align:center"></div>
-  <p id="inapp" hidden style="color:var(--warn);font-size:13px">You seem to be in an in-app browser (WhatsApp, Instagram, etc). If the camera does not work, tap the ⋯ menu and choose “Open in Chrome” or “Open in Safari”.</p>
-  <div class="fine" style="text-align:center">Best in Chrome, Edge or Safari. Up to 6 people per room.</div>
+  <div class="panel">
+    <div class="meet">Meeting <code id="room2"></code> · <a href="#" id="newmeet">start a different meeting</a></div>
+    <div class="two">
+      <label class="fld">Data budget
+        <select id="budget"><option value="0">No limit</option><option value="100">100 MB</option><option value="250" selected>250 MB</option><option value="500">500 MB</option><option value="1000">1 GB</option><option value="2000">2 GB</option></select></label>
+      <label class="fld">Meeting length
+        <select id="mins"><option value="15">15 min</option><option value="30">30 min</option><option value="60" selected>1 hour</option><option value="90">90 min</option><option value="120">2 hours</option></select></label>
+    </div>
+    <div class="hint" id="hint"></div>
+    <label class="opt"><input type="checkbox" id="mobile"> I am on mobile data</label>
+    <label class="opt"><input type="checkbox" id="camoff"> Join with camera off</label>
+    <button id="go" class="btn primary big" style="margin-top:8px">Join meeting</button>
+    <button id="test" class="btn big" style="margin-top:8px">Test my connection</button>
+    <div id="testout" class="fine" style="text-align:center"></div>
+    <p id="inapp" hidden style="color:var(--warn);font-size:13px">You seem to be in an in-app browser (WhatsApp, Instagram, etc). If the camera does not work, tap the ⋯ menu and choose “Open in Chrome” or “Open in Safari”.</p>
+  </div>
+  <details>
+    <summary>How the data budget works</summary>
+    <ul class="how">
+      <li><b>You set a budget.</b> Auto quality picks the best video that lets it last your whole meeting.</li>
+      <li><b>You get a warning</b> only when about 10 minutes of data are left at your current rate. You can extend or switch to audio only.</li>
+      <li><b>At the limit,</b> video pauses and audio continues until you extend.</li>
+      <li><b>Direct and encrypted.</b> Media goes straight between devices, or via an encrypted relay on strict mobile networks.</li>
+    </ul>
+    <table class="usage"><tr><th>Mode</th><th>Quality</th><th>Up to, per hour</th></tr>
+    <tr><td>Audio only</td><td>voice</td><td>~30 MB</td></tr><tr><td>Saver</td><td>360p · 15 fps</td><td>~165 MB</td></tr>
+    <tr><td>Balanced</td><td>540p · 20 fps</td><td>~390 MB</td></tr><tr><td>HD</td><td>720p · 30 fps</td><td>~1,400 MB</td></tr></table>
+    <div class="fine">Upper limits for a 1-to-1 call (upload plus download), estimated from bitrate caps. Real use varies by codec, network, and content. The live meter shows your measured usage.</div>
+  </details>
 </main>
 
 <div id="app" hidden>
-  <div id="grid"></div>
+  <div id="grid">
+    <div class="empty" id="empty"><b>You are the only one here</b>Invite people to start the call.<br><button class="btn primary" id="e-invite">Invite people</button></div>
+  </div>
   <div id="diag"></div>
-  <div id="budgetbar">
-    <div>Remaining<b id="brem">–</b></div>
-    <div>Used<b id="bused">0.0 MB</b></div>
-    <div>Rate<b id="brate">–</b></div>
-    <div>ETA to limit<b id="beta">–</b></div>
-    <div id="bwarn" class="warn"></div>
-  </div>
-  <div id="stats">
-    <div>Upload<b id="up">–</b></div>
-    <div>Download<b id="dn">–</b></div>
-    <div>This call<b id="tot">0.0 MB</b></div>
-    <div id="net">Waiting for others…</div>
-  </div>
-  <div id="cats"></div>
-  <details id="settings">
-    <summary>Data settings &amp; budget</summary>
-    <div class="set">
-      <select id="mode" aria-label="Quality">
-        <option value="auto">Auto (follows your budget)</option>
-        <option value="hd">HD 720p · up to ~1,400 MB/h</option>
-        <option value="balanced">Balanced 540p · ~390 MB/h</option>
-        <option value="saver">Saver 360p · ~165 MB/h</option>
-        <option value="audio">Audio only · ~30 MB/h</option>
-      </select>
-      <label>Total budget <input id="capTotal" type="number" min="0" value="0" style="width:80px"> MB (0 = no limit)</label>
-      <label>Hourly cap <input id="capHour" type="number" min="0" value="0" style="width:70px"> MB/h (0 = no limit)</label>
-      <span id="qlabel" style="color:var(--mut);font-size:13px"></span>
-    </div>
-    <div class="set">
-      <button id="benchStart" class="btn">Start benchmark log</button>
-      <button id="benchStop" class="btn" hidden>Stop &amp; download JSON</button>
-      <span id="benchInfo" class="fine" style="margin:0"></span>
-    </div>
-  </details>
+  <div id="alert" hidden></div>
+  <button class="dbar" id="dbar" title="Open data usage"><span id="dq">–</span><span id="du">0 MB used</span><i id="dfill"></i></button>
   <nav id="bar">
-    <button id="mic" class="ctl on"><i>🎤</i>Mic</button>
-    <button id="cam" class="ctl"><i>📷</i>Camera</button>
-    <button id="share" class="ctl"><i>🖥</i>Slides</button>
-    <button id="recv" class="ctl on" title="Turn off to stop others sending you video"><i>📥</i>Get video</button>
-    <button id="leave" class="ctl danger"><i>✕</i>Leave</button>
+    <button id="mic" class="ctl" title="Mute / unmute"><svg class="ic" viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/><line class="slash" x1="3" y1="3" x2="21" y2="21"/></svg><span>Mic</span></button>
+    <button id="cam" class="ctl" title="Camera on / off"><svg class="ic" viewBox="0 0 24 24"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/><line class="slash" x1="3" y1="3" x2="21" y2="21"/></svg><span>Camera</span></button>
+    <button id="share" class="ctl" title="Share your screen at very low data"><svg class="ic" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg><span>Slides</span></button>
+    <button id="recv" class="ctl" title="Turn off to stop receiving others' video"><svg class="ic" viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"/><circle cx="12" cy="12" r="3"/><line class="slash" x1="3" y1="3" x2="21" y2="21"/></svg><span>Watch</span></button>
+    <button id="view" class="ctl" title="Switch view"><svg class="ic" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg><span>Gallery</span></button>
+    <button id="data" class="ctl" title="Data usage and quality"><svg class="ic" viewBox="0 0 24 24"><path d="M18 20V10M12 20V4M6 20v-6"/></svg><span>Data</span></button>
+    <button id="leave" class="ctl danger" title="Leave the call"><svg class="ic" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg><span>Leave</span></button>
   </nav>
 </div>
 
+<div class="sheet" id="sheet-invite" hidden><div class="box">
+  <div class="sh"><b>Invite people</b><button class="x" data-close aria-label="Close">✕</button></div>
+  <input id="link" readonly>
+  <div class="rowb"><button class="btn primary" id="cpy">Copy link</button><button class="btn" id="nat" hidden>Share…</button></div>
+  <div class="rowb"><button class="btn" id="wa">WhatsApp</button><button class="btn" id="em">Email</button></div>
+  <div class="fine">Anyone with this link can join (up to 6 people). Ask them to open it in Chrome or Safari and allow camera and microphone.</div>
+</div></div>
+
+<div class="sheet" id="sheet-data" hidden><div class="box">
+  <div class="sh"><b>Data usage</b><button class="x" data-close aria-label="Close">✕</button></div>
+  <div class="big" id="stext">0 MB used</div>
+  <div class="bar"><i id="sfill"></i></div>
+  <div class="fine">Extend your budget</div>
+  <div class="rowb"><button class="btn" data-x="50">+50 MB</button><button class="btn" data-x="100">+100 MB</button><button class="btn" data-x="250">+250 MB</button><button class="btn" data-x="0">No limit</button></div>
+  <label class="fld" style="margin-top:14px">Video quality
+    <select id="mode"><option value="auto">Auto (recommended)</option><option value="hd">HD 720p</option><option value="balanced">Balanced 540p</option><option value="saver">Saver 360p</option><option value="audio">Audio only</option></select></label>
+  <div class="fine" id="qlabel"></div>
+  <div class="kv"><div>Upload<b id="up">–</b></div><div>Download<b id="dn">–</b></div><div>This call<b id="tot">0.0 MB</b></div><div>At this rate<b id="ph">–</b></div></div>
+  <div class="fine" id="net">Waiting for others…</div>
+  <div id="cats" class="fine" style="margin-top:8px"></div>
+  <div class="rowb" style="margin-top:12px"><button class="btn" id="export">Export call data (JSON)</button></div>
+  <div class="fine">Auto quality adjusts to make your budget last the planned meeting. At the limit video pauses and audio continues until you extend.</div>
+</div></div>
+
 <script>
 const $ = s => document.querySelector(s);
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).catch(() => {});
 if (/FBAN|FBAV|Instagram|Line\/|MicroMessenger|Snapchat|TikTok/i.test(navigator.userAgent)) $('#inapp').hidden = false;
 
 const MODES = {
@@ -167,199 +186,120 @@ const MODES = {
 const SLIDES = {h: 1080, fps: 2, kbps: 250};
 const AUDIO_KBPS = 24;
 
-// ---- DataAccountant: per-peer, per-kind, sent vs received ----
+// ---- DataAccountant: per-peer, per-kind, sent vs received, transport overhead ----
 const accountant = {
-  peers: new Map(), // peerId -> {audioSent, videoSent, screenSent, audioRecv, videoRecv, screenRecv, prev: {…}}
-  session: {audioSent:0, videoSent:0, screenSent:0, audioRecv:0, videoRecv:0, screenRecv:0},
+  peers: new Map(),
+  session: {audioSent:0, videoSent:0, screenSent:0, audioRecv:0, videoRecv:0, screenRecv:0, transportSent:0, transportRecv:0},
   lastSample: performance.now(),
   lastTotals: {sent:0, recv:0},
   lastRate: {sent:0, recv:0},
-  baseline: null,
-  reset() {
-    this.peers.clear();
-    for (const k in this.session) this.session[k] = 0;
-    this.lastSample = performance.now();
-    this.lastTotals = {sent:0, recv:0};
-    this.lastRate = {sent:0, recv:0};
-  },
   ensurePeer(id) {
-    if (!this.peers.has(id)) this.peers.set(id, {
-      audioSent:0, videoSent:0, screenSent:0,
-      audioRecv:0, videoRecv:0, screenRecv:0,
-      prev: {}
-    });
+    if (!this.peers.has(id)) this.peers.set(id, {audioSent:0, videoSent:0, screenSent:0, audioRecv:0, videoRecv:0, screenRecv:0, transportSent:0, transportRecv:0, prev: {}});
     return this.peers.get(id);
   },
-  // Called with a getStats() report and the peer's current state (sharing or not)
-  ingest(peerId, report, isSharing) {
+  ingest(peerId, report) {
     const p = this.ensurePeer(peerId);
-    const by = {};
-    report.forEach(r => by[r.id] = r);
+    const by = {}; report.forEach(r => by[r.id] = r);
 
     report.forEach(r => {
       if (r.type === 'outbound-rtp') {
-        const b = r.bytesSent || 0;
+        const b = (r.bytesSent || 0);
         const prev = p.prev['out_' + r.id] || 0;
         const delta = Math.max(0, b - prev);
         p.prev['out_' + r.id] = b;
         if (r.kind === 'audio') { p.audioSent += delta; this.session.audioSent += delta; }
         else if (r.kind === 'video') {
-          // Screen share uses the same kind but we tag it via mid or track id heuristics
-          // Best effort: if S.share and this is the video sender, attribute to screen
-          if (isSharing) { p.screenSent += delta; this.session.screenSent += delta; }
+          // Standardized content type for screen share
+          if (r.contentType === 'screenshare') { p.screenSent += delta; this.session.screenSent += delta; }
           else { p.videoSent += delta; this.session.videoSent += delta; }
         }
       }
       if (r.type === 'inbound-rtp') {
-        const b = r.bytesReceived || 0;
+        const b = (r.bytesReceived || 0);
         const prev = p.prev['in_' + r.id] || 0;
         const delta = Math.max(0, b - prev);
         p.prev['in_' + r.id] = b;
         if (r.kind === 'audio') { p.audioRecv += delta; this.session.audioRecv += delta; }
-        else if (r.kind === 'video') {
-          // We can't perfectly distinguish incoming screen share from camera without signalling,
-          // so we attribute all received video to videoRecv. Document this limit.
-          p.videoRecv += delta; this.session.videoRecv += delta;
-        }
+        else if (r.kind === 'video') { p.videoRecv += delta; this.session.videoRecv += delta; }
+      }
+      if (r.type === 'transport') {
+        // Payload bytes at transport level, excluding headers/padding/ICE checks
+        const bs = (r.bytesSent || 0), br = (r.bytesReceived || 0);
+        const prevS = p.prev['t_s'] || 0, prevR = p.prev['t_r'] || 0;
+        p.transportSent += Math.max(0, bs - prevS); p.transportRecv += Math.max(0, br - prevR);
+        this.session.transportSent += Math.max(0, bs - prevS); this.session.transportRecv += Math.max(0, br - prevR);
+        p.prev['t_s'] = bs; p.prev['t_r'] = br;
       }
     });
 
-    const now = performance.now();
-    const dt = (now - this.lastSample) / 1000;
+    const now = performance.now(), dt = (now - this.lastSample) / 1000;
     if (dt > 0.5) {
       const sent = this.totalSent(), recv = this.totalRecv();
-      const ds = Math.max(0, sent - this.lastTotals.sent);
-      const dr = Math.max(0, recv - this.lastTotals.recv);
-      this.lastRate.sent = ds / dt;
-      this.lastRate.recv = dr / dt;
-      this.lastTotals = {sent, recv};
-      this.lastSample = now;
+      this.lastRate.sent = Math.max(0, sent - this.lastTotals.sent) / dt;
+      this.lastRate.recv = Math.max(0, recv - this.lastTotals.recv) / dt;
+      this.lastTotals = {sent, recv}; this.lastSample = now;
     }
   },
   totalSent() { return this.session.audioSent + this.session.videoSent + this.session.screenSent; },
   totalRecv() { return this.session.audioRecv + this.session.videoRecv + this.session.screenRecv; },
   total() { return this.totalSent() + this.totalRecv(); },
-  // MB/min over the last ~60s window (approximation using last rate sample)
-  mbPerMin() { return ((this.lastRate.sent + this.lastRate.recv) * 60) / 1e6; },
   snapshot() {
-    return {
-      ts: new Date().toISOString(),
-      sessionBytes: {...this.session},
-      totalBytes: this.total(),
-      rateBps: {...this.lastRate},
-      peers: Object.fromEntries([...this.peers].map(([id, p]) => [id, {
-        audioSent:p.audioSent, videoSent:p.videoSent, screenSent:p.screenSent,
-        audioRecv:p.audioRecv, videoRecv:p.videoRecv, screenRecv:p.screenRecv
-      }]))
-    };
+    return {ts: new Date().toISOString(), session: {...this.session}, total: this.total(), rate: {...this.lastRate},
+      peers: Object.fromEntries([...this.peers].map(([id, p]) => [id, {audioSent:p.audioSent, videoSent:p.videoSent, screenSent:p.screenSent, audioRecv:p.audioRecv, videoRecv:p.videoRecv, screenRecv:p.screenRecv, transportSent:p.transportSent, transportRecv:p.transportRecv}]))};
   }
 };
 
 const peers = new Map();
-const S = {mode: 'auto', capTotal: 0, capHour: 0, share: false, recv: true, mobile: false};
+const S = {mode: 'auto', cap: 0, budget: 0, mins: 60, share: false, recv: true, view: 'focus', pin: null, k: null, kt: 0, exhausted: false, warned: false, t0: 0, mobile: false};
+
 let room = location.hash.slice(1).replace(/[^\w-]/g, '').slice(0, 40);
 if (!room) { room = Math.random().toString(36).slice(2, 8); location.hash = room; }
-$('#room').textContent = room;
+$('#room').textContent = $('#room2').textContent = room;
+$('#newmeet').onclick = e => { e.preventDefault(); location.hash = Math.random().toString(36).slice(2, 8); location.reload(); };
 
 const rid = n => Array.from(crypto.getRandomValues(new Uint8Array(n)), b => b.toString(16).padStart(2, '0')).join('');
-let me = rid(4), token = rid(16), ice = [], hasRelay = false, wake, mic, cam, scr, local, es, sendQ = Promise.resolve();
+let me = rid(4), token = rid(16), ice = [], hasRelay = false, wake, mic, cam, scr, local, es, sendQ = Promise.resolve(), TU = 0, TD = 0;
 const FORCE_RELAY = /[?&]relay=1/.test(location.search);
 const diag = t => $('#diag').textContent = t || '';
 
-// ---- Local budget engine ----
-const budget = {
-  totalCapMB: 0,
-  hourlyCapMB: 0,
-  warnShown: false,
-  // Returns the most restrictive applicable limit in MB, or null
-  applicableLimit() {
-    const limits = [];
-    if (this.totalCapMB > 0) limits.push({name: 'total', mb: this.totalCapMB - accountant.total() / 1e6});
-    if (this.hourlyCapMB > 0) {
-      const rate = accountant.mbPerMin();
-      if (rate > 0) {
-        const remainHourMB = this.hourlyCapMB; // hourly cap is a rate limit, not cumulative
-        limits.push({name: 'hourly', mb: remainHourMB, rateBased: true});
-      }
-    }
-    if (!limits.length) return null;
-    // For hourly, "remaining" is conceptually how much more you can spend in an hour at current rate
-    // We use the rate comparison instead
-    return limits.sort((a, b) => (a.mb || Infinity) - (b.mb || Infinity))[0];
-  },
-  remainingMB() {
-    if (this.totalCapMB <= 0) return null;
-    return Math.max(0, this.totalCapMB - accountant.total() / 1e6);
-  },
-  etaMinutes() {
-    const rate = accountant.mbPerMin();
-    if (rate <= 0) return null;
-    let minEta = Infinity;
-    if (this.totalCapMB > 0) {
-      const rem = this.remainingMB();
-      if (rem !== null) minEta = Math.min(minEta, rem / rate);
-    }
-    if (this.hourlyCapMB > 0) {
-      // How long at current rate until you would exceed the hourly cap
-      const eta = 60; // hourly cap is per-hour; if rate > cap, warn immediately
-      if (rate > this.hourlyCapMB) minEta = Math.min(minEta, 0);
-      else minEta = Math.min(minEta, 60); // not exhausted within this hour
-    }
-    return minEta === Infinity ? null : minEta;
-  },
-  // Called each stats tick. Returns true if quality should be reduced.
-  checkAndAdapt() {
-    const eta = this.etaMinutes();
-    if (eta !== null && eta < 8) {
-      if (!this.warnShown) {
-        diag('Data budget warning: first limit predicted in ' + Math.round(eta) + ' minutes.');
-        this.warnShown = true;
-      }
-      // Adaptive: drop to audio if very close, saver if moderately close
-      if (eta < 2 && S.mode === 'auto') return 'audio';
-      if (eta < 5 && S.mode === 'auto' && qKey() === 'balanced') return 'saver';
-    } else if (eta !== null && eta > 15) {
-      this.warnShown = false;
-      if (!diag()) diag('');
-    }
-    return null;
-  }
-};
-
-// Load saved budget from localStorage (device-local only)
-try {
-  const saved = JSON.parse(localStorage.getItem('ld_budget') || '{}');
-  S.capTotal = saved.total || 0;
-  S.capHour = saved.hour || 0;
-  $('#capTotal').value = S.capTotal;
-  $('#capHour').value = S.capHour;
-  budget.totalCapMB = S.capTotal;
-  budget.hourlyCapMB = S.capHour;
-} catch {}
-
-function saveBudget() {
-  try { localStorage.setItem('ld_budget', JSON.stringify({total: S.capTotal, hour: S.capHour})); } catch {}
+function sig(to, data) {
+  sendQ = sendQ.then(() => fetch('/signal', {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify({room, from: me, token, to, data})}).catch(() => {}));
 }
 
-// ---- Quality logic (now budget-aware) ----
-function qKey() {
-  if (S.mode !== 'auto') return S.mode;
+const ICON = {max: '<svg class="ic" viewBox="0 0 24 24"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>'};
+function addTile(label, mirror, key) {
+  const el = document.createElement('div'); el.className = 'tile' + (mirror ? ' mirror' : ''); el.dataset.k = key;
+  el.innerHTML = '<video autoplay playsinline></video><span class="lbl"></span><button class="fs" title="Full screen" aria-label="Full screen">' + ICON.max + '</button>';
+  const v = el.querySelector('video'), s = el.querySelector('.lbl'), t = {el, v, s}; s.textContent = label;
+  if (mirror) v.muted = true;
+  el.querySelector('.fs').onclick = e => { e.stopPropagation(); goFull(t); };
+  el.onclick = () => { S.pin = key; S.view = 'focus'; layout(); };
+  el.ondblclick = () => goFull(t);
+  $('#grid').appendChild(el); return t;
+}
+function goFull(t) {
+  if (document.fullscreenElement) return document.exitFullscreen();
+  if (t.el.requestFullscreen) t.el.requestFullscreen().catch(() => {});
+  else if (t.el.webkitRequestFullscreen) t.el.webkitRequestFullscreen();
+  else if (t.v.webkitEnterFullscreen) t.v.webkitEnterFullscreen();
+}
+function layout() {
+  const rem = [...peers.values()]; let pin = null;
+  if (S.view === 'focus' && rem.length) pin = (S.pin === 'me' || peers.has(S.pin)) ? S.pin : (rem.find(p => p.sharing) || rem[0]).id;
+  $('#grid').classList.toggle('focus', !!pin);
+  $('#grid').querySelectorAll('.tile').forEach(t => t.classList.toggle('pin', t.dataset.k === pin));
+  $('#empty').hidden = rem.length > 0;
+  $('#view span').textContent = pin ? 'Gallery' : 'Focus';
+}
+
+function calcKey() {
   const n = Math.max(1, peers.size), c = navigator.connection || {};
   const slow = /2g/.test(c.effectiveType || ''), cell = S.mobile || c.type === 'cellular' || c.effectiveType === '3g' || c.saveData;
-
-  // If a budget cap is active, respect it first
-  const cap = S.capTotal > 0 ? budget.remainingMB() : null;
-  if (cap !== null && cap < 5) return 'audio'; // nearly exhausted
-
-  if (S.capHour > 0 && accountant.mbPerMin() > S.capHour) {
-    // Currently over hourly pace; drop one notch
-    return 'saver';
-  }
-
-  if (slow) return 'audio';
-  if (cell || n >= 3) return 'saver';
-  return 'balanced';
+  if (S.cap > 0) return ['hd', 'balanced', 'saver'].find(k => 2 * n * (MODES[k].kbps + AUDIO_KBPS) * 0.45 <= S.cap) || 'audio';
+  return slow ? 'audio' : (cell || n >= 3) ? 'saver' : 'balanced';
 }
+function reK() { S.k = calcKey(); S.kt = performance.now(); }
+function qKey() { return S.exhausted ? 'audio' : S.mode !== 'auto' ? S.mode : (S.k || (S.k = calcKey())); }
 
 async function tune(sender, o) {
   const p = sender.getParameters();
@@ -370,89 +310,63 @@ async function tune(sender, o) {
 
 async function applyPeer(p) {
   if (!p.vs) return;
-  const sharing = S.share && scr, q = MODES[qKey()];
+  const sharing = S.share && scr && !S.exhausted, q = MODES[qKey()];
   const t = !p.wantVideo ? null : sharing ? scr : (q ? cam : null);
   const P = sharing ? SLIDES : q;
   if (p.vs.track !== t) await p.vs.replaceTrack(t).catch(() => {});
   if (t && P) {
     t.contentHint = sharing ? 'detail' : 'motion';
-    await tune(p.vs, {
-      maxBitrate: P.kbps * 1000, maxFramerate: P.fps,
-      scaleResolutionDownBy: Math.max(1, (t.getSettings().height || 720) / P.h)
-    });
+    await tune(p.vs, {maxBitrate: P.kbps * 1000, maxFramerate: P.fps, scaleResolutionDownBy: Math.max(1, (t.getSettings().height || 720) / P.h)});
   }
   if (p.as) await tune(p.as, {maxBitrate: AUDIO_KBPS * 1000});
 }
 
 function refresh() {
-  const sharing = S.share && scr, t = sharing ? scr : cam;
+  const sharing = S.share && scr && !S.exhausted, t = sharing ? scr : cam;
   if (local) {
     if (local.cur !== t) { local.v.srcObject = t ? new MediaStream([t]) : null; local.cur = t; }
-    local.el.classList.toggle('mirror', !sharing);
-    local.s.textContent = t ? 'You' : 'You (camera off)';
+    local.el.classList.toggle('mirror', !sharing); local.s.textContent = t ? 'You' : 'You (camera off)';
   }
-  const k = qKey();
-  $('#qlabel').textContent = S.mode === 'auto' ? 'Auto → ' + (MODES[k] ? MODES[k].n : 'Audio only') : '';
-  $('#cam').classList.toggle('on', !!cam);
-  $('#mic').classList.toggle('on', !!mic && mic.enabled);
-  $('#share').classList.toggle('on', !!(S.share && scr));
-  peers.forEach(applyPeer);
+  const m = MODES[qKey()], lbl = (S.exhausted ? 'Limit reached · ' : '') + (m ? m.n : 'Audio only');
+  $('#qlabel').textContent = S.mode === 'auto' ? 'Auto is using: ' + lbl : 'Using: ' + lbl;
+  $('#dq').textContent = lbl;
+  $('#cam').classList.toggle('off', !cam); $('#mic').classList.toggle('off', !mic || !mic.enabled);
+  $('#share').classList.toggle('on', !!sharing); $('#recv').classList.toggle('off', !S.recv);
+  peers.forEach(applyPeer); layout();
 }
 
 const VID = {width: {ideal: 1280}, height: {ideal: 720}, frameRate: {ideal: 30}};
 async function setCam(on) {
-  if (on) {
-    try { cam = (await navigator.mediaDevices.getUserMedia({video: VID})).getVideoTracks()[0]; }
-    catch (e) { diag('Camera: ' + e.name + ' – ' + e.message); cam = null; }
-  } else if (cam) { cam.stop(); cam = null; }
+  if (on) { try { cam = (await navigator.mediaDevices.getUserMedia({video: VID})).getVideoTracks()[0]; } catch (e) { diag('Camera: ' + e.name + ' – ' + e.message); cam = null; } }
+  else if (cam) { cam.stop(); cam = null; }
   refresh();
-}
-
-function addTile(label, mirror) {
-  const el = document.createElement('div'); el.className = 'tile' + (mirror ? ' mirror' : '');
-  el.innerHTML = '<video autoplay playsinline></video><span></span>';
-  const v = el.querySelector('video'), s = el.querySelector('span'); s.textContent = label;
-  if (mirror) v.muted = true;
-  $('#grid').appendChild(el);
-  return {el, v, s};
 }
 
 function mkPeer(id) {
   const pc = new RTCPeerConnection({iceServers: ice, bundlePolicy: 'max-bundle', iceCandidatePoolSize: 2, iceTransportPolicy: FORCE_RELAY ? 'relay' : 'all'});
-  const p = {id, pc, wantVideo: true, ms: new MediaStream(), tile: addTile('Guest ' + id.slice(0, 3))};
-  p.tile.v.srcObject = p.ms;
-  peers.set(id, p);
-  accountant.ensurePeer(id);
+  const p = {id, pc, wantVideo: true, ms: new MediaStream(), tile: addTile('Guest ' + id.slice(0, 3), false, id)};
+  p.tile.v.srcObject = p.ms; peers.set(id, p); accountant.ensurePeer(id);
   pc.onicecandidate = e => e.candidate && sig(id, {c: e.candidate});
   pc.ontrack = e => { p.ms.addTrack(e.track); p.tile.v.play().catch(() => {}); };
   pc.onconnectionstatechange = () => {
-    const st = pc.connectionState, name = 'Guest ' + id.slice(0, 3);
-    clearTimeout(p.rt);
-    if (st === 'connected') { applyPeer(p); p.tile.s.textContent = name; }
-    else p.tile.s.textContent = name + ' (' + st + ')';
+    const st = pc.connectionState, name = 'Guest ' + id.slice(0, 3); clearTimeout(p.rt);
+    if (st === 'connected') { applyPeer(p); p.tile.s.textContent = name; } else p.tile.s.textContent = name + ' (' + st + ')';
     if (st === 'disconnected' || st === 'failed') p.rt = setTimeout(() => restartIce(p), st === 'failed' ? 500 : 4000);
     if (st === 'failed' && !hasRelay) diag('Connection failed. Some mobile networks need a relay (TURN) server.');
   };
-  refresh();
-  return p;
+  reK(); refresh(); return p;
 }
 
 function setup(p, offerer) {
   const pc = p.pc; let a, v;
-  if (offerer) {
-    a = pc.addTransceiver('audio', {direction: 'sendrecv'});
-    v = pc.addTransceiver('video', {direction: 'sendrecv'});
-  } else {
-    [a, v] = ['audio', 'video'].map(k => pc.getTransceivers().find(t => t.receiver.track.kind === k));
-    a.direction = v.direction = 'sendrecv';
-  }
+  if (offerer) { a = pc.addTransceiver('audio', {direction: 'sendrecv'}); v = pc.addTransceiver('video', {direction: 'sendrecv'}); }
+  else { [a, v] = ['audio', 'video'].map(k => pc.getTransceivers().find(t => t.receiver.track.kind === k)); a.direction = v.direction = 'sendrecv'; }
   p.as = a.sender; p.vs = v.sender;
   if (mic) a.sender.replaceTrack(mic).catch(() => {});
-  try {
-    const rank = c => /AV1/i.test(c.mimeType) ? 0 : /VP9/i.test(c.mimeType) ? 1 : 2;
-    v.setCodecPreferences([...RTCRtpReceiver.getCapabilities('video').codecs].sort((x, y) => rank(x) - rank(y)));
-  } catch {}
+  try { const rank = c => /AV1/i.test(c.mimeType) ? 0 : /VP9/i.test(c.mimeType) ? 1 : 2;
+    v.setCodecPreferences([...RTCRtpReceiver.getCapabilities('video').codecs].sort((x, y) => rank(x) - rank(y))); } catch {}
   if (!S.recv) sig(p.id, {ctl: {video: false}});
+  if (S.share && scr) sig(p.id, {ctl: {sharing: true}});
   applyPeer(p);
 }
 
@@ -462,44 +376,35 @@ async function restartIce(p, force) {
   if (p.pc.signalingState !== 'stable') return;
   try { await p.pc.setLocalDescription(await p.pc.createOffer({iceRestart: true})); sig(p.id, {d: p.pc.localDescription}); } catch {}
 }
-
 async function call(id) {
   const p = mkPeer(id); p.offerer = true; setup(p, true);
-  await p.pc.setLocalDescription(await p.pc.createOffer());
-  sig(id, {d: p.pc.localDescription});
+  await p.pc.setLocalDescription(await p.pc.createOffer()); sig(id, {d: p.pc.localDescription});
 }
-
 async function onSignal(from, d) {
   let p = peers.get(from);
   try {
     if (d.d && d.d.type === 'offer') {
       if (!p) p = mkPeer(from);
       await p.pc.setRemoteDescription(d.d); if (!p.vs) setup(p, false);
-      await p.pc.setLocalDescription(await p.pc.createAnswer());
-      sig(from, {d: p.pc.localDescription});
+      await p.pc.setLocalDescription(await p.pc.createAnswer()); sig(from, {d: p.pc.localDescription});
     } else if (d.d && p) await p.pc.setRemoteDescription(d.d);
     else if (d.c && p) await p.pc.addIceCandidate(d.c);
     else if (d.restart && p) restartIce(p, true);
-    else if (d.ctl && p) { p.wantVideo = d.ctl.video; applyPeer(p); }
+    else if (d.ctl && p) {
+      if ('video' in d.ctl) { p.wantVideo = d.ctl.video; applyPeer(p); }
+      if ('sharing' in d.ctl) { p.sharing = d.ctl.sharing; if (p.sharing) { S.pin = p.id; S.view = 'focus'; } layout(); }
+    }
   } catch (e) { diag('Signal error: ' + e.message); }
 }
-
-function drop(id) {
-  const p = peers.get(id); if (!p) return;
-  p.pc.close(); p.tile.el.remove(); peers.delete(id); accountant.peers.delete(id); refresh();
-}
+function drop(id) { const p = peers.get(id); if (!p) return; p.pc.close(); p.tile.el.remove(); peers.delete(id); accountant.peers.delete(id); reK(); refresh(); }
 
 $('#go').onclick = async () => {
-  $('#join').hidden = true; $('#app').hidden = false; $('#roominfo').hidden = false;
-  S.mobile = $('#mobile').checked;
-  try { if (navigator.wakeLock) wake = await navigator.wakeLock.request('screen'); } catch {}
+  $('#join').hidden = true; $('#app').hidden = false; $('#roominfo').hidden = false; plan(); S.t0 = performance.now(); keepAwake();
   try { const cfg = await (await fetch('/config')).json(); ice = cfg.iceServers; hasRelay = cfg.relay; } catch { ice = [{urls: 'stun:stun.l.google.com:19302'}]; }
-  local = addTile('You', true);
-  if (!navigator.mediaDevices) {
-    diag('Camera and mic need https:// or localhost. Joined as viewer only.');
-  } else {
-    try { mic = (await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: true, noiseSuppression: true, autoGainControl: true}})).getAudioTracks()[0]; }
-    catch (e) { diag('Mic: ' + e.name + ' – ' + e.message); }
+  local = addTile('You', true, 'me');
+  if (!navigator.mediaDevices) { diag('Camera and mic need https:// or localhost. Joined as viewer only.'); }
+  else {
+    try { mic = (await navigator.mediaDevices.getUserMedia({audio: {echoCancellation: true, noiseSuppression: true, autoGainControl: true}})).getAudioTracks()[0]; } catch (e) { diag('Mic: ' + e.name + ' – ' + e.message); }
     if (!$('#camoff').checked) await setCam(true);
   }
   if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) $('#share').hidden = true;
@@ -516,37 +421,72 @@ $('#go').onclick = async () => {
     else if (m.type === 'leave') drop(m.id);
     else if (m.type === 'full') { diag('This room is full (max 6 people).'); es.close(); }
   };
-  es.onerror = () => diag('Reconnecting to server…');
-  es.onopen = () => diag('');
+  es.onerror = () => diag('Reconnecting to server…'); es.onopen = () => diag('');
 };
 
 $('#mic').onclick = () => { if (mic) { mic.enabled = !mic.enabled; refresh(); } };
 $('#cam').onclick = () => setCam(!cam);
 $('#share').onclick = async () => {
-  if (S.share && scr) { scr.stop(); scr = null; S.share = false; return refresh(); }
-  try {
-    scr = (await navigator.mediaDevices.getDisplayMedia({video: {frameRate: 5}})).getVideoTracks()[0];
-    scr.onended = () => { scr = null; S.share = false; refresh(); };
-    S.share = true;
-  } catch (e) { diag('Screen share: ' + e.message); }
+  if (S.share && scr) { scr.stop(); scr = null; S.share = false; announce(); return refresh(); }
+  try { scr = (await navigator.mediaDevices.getDisplayMedia({video: {frameRate: 5}})).getVideoTracks()[0]; scr.onended = () => { scr = null; S.share = false; announce(); refresh(); }; S.share = true; announce(); }
+  catch (e) { diag('Screen share: ' + e.message); }
   refresh();
 };
-$('#recv').onclick = () => {
-  S.recv = !S.recv; $('#recv').classList.toggle('on', S.recv);
-  peers.forEach(p => sig(p.id, {ctl: {video: S.recv}}));
-};
-$('#mode').onchange = e => { S.mode = e.target.value; refresh(); };
-$('#capTotal').onchange = e => { S.capTotal = Math.max(0, +e.target.value || 0); budget.totalCapMB = S.capTotal; saveBudget(); refresh(); };
-$('#capHour').onchange = e => { S.capHour = Math.max(0, +e.target.value || 0); budget.hourlyCapMB = S.capHour; saveBudget(); refresh(); };
-$('#copy').onclick = async () => {
-  try { await navigator.clipboard.writeText(location.href); $('#copy').textContent = 'Copied!'; }
-  catch { prompt('Copy this link:', location.href); }
-  setTimeout(() => $('#copy').textContent = 'Copy invite link', 1500);
-};
-$('#leave').onclick = () => {
-  navigator.sendBeacon('/leave', JSON.stringify({room, id: me, token}));
-  if (es) es.close(); peers.forEach(p => p.pc.close());
-  [mic, cam, scr].forEach(t => t && t.stop()); location.reload();
+$('#recv').onclick = () => { S.recv = !S.recv; refresh(); peers.forEach(p => sig(p.id, {ctl: {video: S.recv}})); };
+$('#mode').onchange = e => { S.mode = e.target.value; reK(); refresh(); };
+$('#leave').onclick = () => { navigator.sendBeacon('/leave', JSON.stringify({room, id: me, token})); if (es) es.close(); peers.forEach(p => p.pc.close()); [mic, cam, scr].forEach(t => t && t.stop()); location.reload(); };
+
+function plan() {
+  S.mobile = $('#mobile').checked; S.budget = +$('#budget').value; S.mins = +$('#mins').value;
+  S.cap = S.budget ? S.budget / (S.mins / 60) : 0; S.exhausted = false; S.warned = false; S.k = null;
+  const m = MODES[qKey()];
+  $('#hint').textContent = (S.budget ? S.budget + ' MB over ' + S.mins + ' min' : 'No data limit') + ' → Auto will use ' + (m ? m.n : 'Audio only') + '.' + (m ? '' : ' Try a bigger budget or a shorter meeting for video.');
+}
+let ema = 0;
+function budgetTick(bytes, dt) {
+  const used = (TU + TD) / 1e6, now = performance.now(); ema = ema ? ema * 0.7 + (bytes / dt) * 0.3 : bytes / dt;
+  let eta = null;
+  if (S.budget) {
+    const left = Math.max(0, S.budget - used); eta = ema > 1000 ? left * 1e6 / ema / 60 : null;
+    if (used >= S.budget && !S.exhausted) { S.exhausted = true; refresh(); alertLimit(); }
+    else if (!S.exhausted && !S.warned && used > 1 && eta !== null && eta <= 10) { S.warned = true; alertSoon(Math.ceil(eta), left); }
+  }
+  const txt = used.toFixed(1) + ' MB' + (S.budget ? ' of ' + S.budget + ' MB' : ' used') + (eta !== null ? ' · ~' + Math.max(1, Math.round(eta)) + ' min left' : '');
+  const pct = S.budget ? Math.min(100, used / S.budget * 100) : 0, lvl = pct >= 100 ? 'red' : pct >= 80 ? 'amber' : '';
+  $('#du').textContent = $('#stext').textContent = txt;
+  $('#dfill').style.width = $('#sfill').style.width = pct + '%'; $('#dbar').dataset.lvl = lvl; $('#sfill').dataset.lvl = lvl;
+}
+function extend(mb) { const used = (TU + TD) / 1e6; S.budget = (S.budget > used ? S.budget : Math.ceil(used)) + mb; S.exhausted = false; S.warned = false; reK(); refresh(); }
+function noLimit() { S.budget = 0; S.cap = 0; S.exhausted = false; S.warned = false; reK(); refresh(); }
+function showAlert(msg, btns, lvl) {
+  const a = $('#alert'); a.dataset.lvl = lvl; a.innerHTML = '';
+  const t = document.createElement('div'); t.textContent = msg; a.appendChild(t);
+  const row = document.createElement('div'); row.className = 'rowb';
+  btns.concat([{t: 'Dismiss'}]).forEach(b => { const x = document.createElement('button'); x.className = 'btn'; x.textContent = b.t; x.onclick = () => { if (b.f) b.f(); a.hidden = true; }; row.appendChild(x); });
+  a.appendChild(row); a.hidden = false; if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+}
+const toAudio = () => { S.mode = 'audio'; $('#mode').value = 'audio'; reK(); refresh(); };
+const alertSoon = (min, left) => showAlert('Heads up: about ' + min + ' min of data left (' + Math.round(left) + ' MB).', [{t: 'Extend +100 MB', f: () => extend(100)}, {t: 'Audio only', f: toAudio}], 'amber');
+const alertLimit = () => showAlert('Data limit reached. Video is paused to protect your data; audio continues.', [{t: 'Extend +100 MB', f: () => extend(100)}, {t: '+250 MB', f: () => extend(250)}], 'red');
+function announce() { peers.forEach(p => sig(p.id, {ctl: {sharing: !!(S.share && scr)}})); }
+
+const inviteURL = () => location.origin + location.pathname + '#' + room;
+const inviteText = () => 'Join my video call (it uses very little data): ' + inviteURL();
+$('#invite').onclick = $('#e-invite').onclick = () => { $('#link').value = inviteURL(); $('#sheet-invite').hidden = false; };
+$('#cpy').onclick = async () => { try { await navigator.clipboard.writeText(inviteURL()); } catch { $('#link').select(); document.execCommand('copy'); } $('#cpy').textContent = 'Copied ✓'; setTimeout(() => $('#cpy').textContent = 'Copy link', 1600); };
+$('#wa').onclick = () => window.open('https://wa.me/?text=' + encodeURIComponent(inviteText()), '_blank');
+$('#em').onclick = () => { location.href = 'mailto:?subject=' + encodeURIComponent('Join my video call') + '&body=' + encodeURIComponent(inviteText() + '\n\nOpen the link in Chrome or Safari and allow camera and microphone.'); };
+if (navigator.share) $('#nat').hidden = false;
+$('#nat').onclick = () => navigator.share({title: 'LowData Call', text: 'Join my video call', url: inviteURL()}).catch(() => {});
+$('#data').onclick = $('#dbar').onclick = () => { $('#sheet-data').hidden = false; };
+document.querySelectorAll('[data-x]').forEach(b => b.onclick = () => +b.dataset.x ? extend(+b.dataset.x) : noLimit());
+document.querySelectorAll('.sheet').forEach(s => s.addEventListener('click', e => { if (e.target === s || e.target.closest('[data-close]')) s.hidden = true; }));
+$('#view').onclick = () => { S.view = S.view === 'focus' ? 'grid' : 'focus'; if (S.view === 'focus') S.pin = null; layout(); };
+
+$('#export').onclick = () => {
+  const data = { exported: new Date().toISOString(), snapshot: accountant.snapshot(), budget: {cap: S.budget, mins: S.mins, mode: S.mode} };
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'lowdata-call-' + Date.now() + '.json'; a.click();
 };
 
 async function keepAwake() { try { if (navigator.wakeLock) wake = await navigator.wakeLock.request('screen'); } catch {} }
@@ -555,30 +495,8 @@ addEventListener('online', nudge);
 if (navigator.connection) navigator.connection.addEventListener('change', nudge);
 document.addEventListener('visibilitychange', () => { if (!document.hidden && !$('#app').hidden) { keepAwake(); nudge(); } });
 
-// ---- Benchmark recorder ----
-let benchData = null;
-$('#benchStart').onclick = () => {
-  benchData = {started: new Date().toISOString(), samples: [], config: {mode: S.mode, capTotal: S.capTotal, capHour: S.capHour, relay: FORCE_RELAY}};
-  $('#benchStart').hidden = true; $('#benchStop').hidden = false;
-  $('#benchInfo').textContent = 'Recording… let the call run, then stop and download.';
-  // Push an initial zero sample so the first interval has a delta baseline
-  benchData.samples.push({t: 0, ...accountant.snapshot()});
-};
-$('#benchStop').onclick = () => {
-  if (!benchData) return;
-  const final = accountant.snapshot();
-  benchData.ended = new Date().toISOString();
-  benchData.samples.push({t: (Date.now() - new Date(benchData.started).getTime()) / 1000, ...final});
-  const blob = new Blob([JSON.stringify(benchData, null, 2)], {type: 'application/json'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'lowdata-bench-' + Date.now() + '.json'; a.click();
-  $('#benchStart').hidden = false; $('#benchStop').hidden = true;
-  $('#benchInfo').textContent = 'Downloaded. Run again with a different quality preset to compare.';
-  benchData = null;
-};
-
-// ---- Pre-flight test (unchanged, just cleaned) ----
 $('#mobile').checked = /Android|iPhone|iPad|Mobi/i.test(navigator.userAgent) || (navigator.connection || {}).type === 'cellular';
+['#budget', '#mins', '#mobile'].forEach(s => $(s).onchange = plan); plan();
 $('#test').onclick = async () => {
   const out = $('#testout'); out.textContent = 'Testing… (up to 8 seconds)';
   let cfg; try { cfg = await (await fetch('/config')).json(); } catch { out.textContent = '✗ Cannot reach the server.'; return; }
@@ -587,91 +505,42 @@ $('#test').onclick = async () => {
   await pc.setLocalDescription(await pc.createOffer());
   await new Promise(r => { const t = setTimeout(r, 8000); pc.onicegatheringstatechange = () => { if (pc.iceGatheringState === 'complete') { clearTimeout(t); r(); } }; });
   pc.close();
-  out.textContent = (found.has('srflx') ? '✓ Direct route found. ' : '✗ No direct route found. ') +
-    (found.has('relay') ? '✓ Relay works (strict mobile networks are covered).' : cfg.relay ? '✗ Relay not reachable from your network.' : '✗ This server has no relay set up yet.');
+  out.textContent = (found.has('srflx') ? '✓ Direct route found. ' : '✗ No direct route found. ') + (found.has('relay') ? '✓ Relay works (strict mobile networks are covered).' : cfg.relay ? '✗ Relay not reachable from your network.' : '✗ This server has no relay set up yet.');
 };
 
-// ---- Main stats loop: ingest into accountant, update UI, adapt quality ----
 let lastT = performance.now();
 setInterval(async () => {
   if (!peers.size) return;
-
   let relay = false, direct = false, codec = '';
+  const now = performance.now(), dt = (now - lastT) / 1000; lastT = now;
   for (const p of peers.values()) {
     try {
-      const st = await p.pc.getStats();
-      accountant.ingest(p.id, st, S.share && !!scr);
+      const st = await p.pc.getStats(), by = {}; st.forEach(r => by[r.id] = r);
+      accountant.ingest(p.id, st);
       st.forEach(r => {
-        if (r.type === 'outbound-rtp' && r.kind === 'video') {
-          const by = {}; st.forEach(x => by[x.id] = x);
-          if (by[r.codecId]) codec = by[r.codecId].mimeType.replace('video/', '');
-        }
+        if (r.type === 'outbound-rtp' && r.kind === 'video' && by[r.codecId]) codec = by[r.codecId].mimeType.replace('video/', '');
+        if (r.type === 'inbound-rtp' && r.kind === 'video' && r.frameHeight) p.res = r.framesPerSecond > 0 ? r.frameHeight + 'p · ' + Math.round(r.framesPerSecond) + ' fps' : 'no video';
         if (r.type === 'candidate-pair' && r.nominated && r.state === 'succeeded') {
-          const by = {}; st.forEach(x => by[x.id] = x);
           const l = by[r.localCandidateId], m = by[r.remoteCandidateId];
           if ((l && l.candidateType === 'relay') || (m && m.candidateType === 'relay')) relay = true; else direct = true;
         }
       });
-      // Per-peer resolution label
-      const vs = st.get ? null : null;
-      // Keep the existing per-peer res logic by scanning directly
-      st.forEach(r => {
-        if (r.type === 'inbound-rtp' && r.kind === 'video' && r.frameHeight) {
-          p.res = r.framesPerSecond > 0 ? r.frameHeight + 'p · ' + Math.round(r.framesPerSecond) + ' fps' : 'no video';
-        }
-      });
-      if (p.res && p.pc.connectionState === 'connected') p.tile.s.textContent = 'Guest ' + p.id.slice(0, 3) + ' · ' + p.res;
     } catch {}
+    if (p.res && p.pc.connectionState === 'connected') p.tile.s.textContent = 'Guest ' + p.id.slice(0, 3) + ' · ' + p.res;
   }
-
-  // ---- Update budget bar ----
-  const rem = budget.remainingMB();
-  const rate = accountant.mbPerMin();
-  const eta = budget.etaMinutes();
-  $('#brem').textContent = rem === null ? 'no limit' : rem.toFixed(1) + ' MB';
-  $('#bused').textContent = (accountant.total() / 1e6).toFixed(1) + ' MB';
-  $('#brate').textContent = rate > 0 ? rate.toFixed(2) + ' MB/min' : '–';
-  $('#beta').textContent = eta === null ? '–' : (eta === Infinity ? '∞' : Math.round(eta) + ' min');
-
-  // Adaptive quality nudge
-  const adapt = budget.checkAndAdapt();
-  if (adapt && S.mode === 'auto') {
-    // Only act if we're actually changing a category
-    const current = qKey();
-    if (adapt !== current) {
-      // Temporarily override by directly applying a stricter mode
-      // This is a soft adaptation; the user can override by setting a manual mode.
-      peers.forEach(applyPeer);
-    }
-  }
-  $('#bwarn').textContent = eta !== null && eta < 8 ? '⚠ close to limit' : '';
-  $('#bwarn').className = eta !== null && eta < 8 ? 'warn' : '';
-
-  // ---- Update main stats ----
-  const sentRate = (accountant.lastRate.sent * 8 / 1000) || 0;
-  const recvRate = (accountant.lastRate.recv * 8 / 1000) || 0;
-  $('#up').textContent = Math.round(sentRate) + ' kbit/s';
-  $('#dn').textContent = Math.round(recvRate) + ' kbit/s';
-  $('#tot').textContent = (accountant.total() / 1e6).toFixed(1) + ' MB';
-  $('#net').textContent = (relay ? 'Relayed via TURN' : direct ? 'Direct peer-to-peer' : 'Connecting…') + (codec ? ' · ' + codec : '');
-
-  // ---- Per-category breakdown ----
+  const newTotal = accountant.total() / 1e6;
+  const deltaBytes = Math.max(0, (newTotal * 1e6) - (TU + TD));
+  TU = accountant.totalSent() / 1e6; TD = accountant.totalRecv() / 1e6;
+  budgetTick(deltaBytes, dt);
+  const kb = b => Math.round(b * 8 / 1000 / dt);
+  $('#up').textContent = kb(accountant.lastRate.sent) + ' kbit/s';
+  $('#dn').textContent = kb(accountant.lastRate.recv) + ' kbit/s';
+  $('#tot').textContent = accountant.total() / 1e6 + ' MB';
+  $('#ph').textContent = '≈ ' + Math.round((accountant.lastRate.sent + accountant.lastRate.recv) * 8 / 1000 * 0.45) + ' MB/h';
   const s = accountant.session;
   const fmt = b => (b / 1e6).toFixed(1) + ' MB';
-  $('#cats').innerHTML =
-    '<span>🎤 Audio ' + fmt(s.audioSent + s.audioRecv) + '</span>' +
-    '<span>📹 Video ' + fmt(s.videoSent + s.videoRecv) + '</span>' +
-    '<span>🖥 Slides ' + fmt(s.screenSent + s.screenRecv) + '</span>' +
-    '<span>📤 Sent ' + fmt(accountant.totalSent()) + '</span>' +
-    '<span>📥 Received ' + fmt(accountant.totalRecv()) + '</span>';
-
-  // Benchmark sampling every tick
-  if (benchData) {
-    benchData.samples.push({
-      t: (Date.now() - new Date(benchData.started).getTime()) / 1000,
-      ...accountant.snapshot()
-    });
-  }
+  $('#cats').innerHTML = 'Audio ' + fmt(s.audioSent + s.audioRecv) + ' · Video ' + fmt(s.videoSent + s.videoRecv) + ' · Slides ' + fmt(s.screenSent + s.screenRecv) + '<br>Transport: ' + fmt(s.transportSent + s.transportRecv);
+  $('#net').textContent = (relay ? 'Relayed via TURN' : direct ? 'Direct peer-to-peer' : 'Connecting…') + (codec ? ' · ' + codec : '');
 }, 2000);
 </script>
 </body>
