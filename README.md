@@ -2,6 +2,11 @@
 Video calls designed to use as little data as possible, built for people on mobile data first, Wi-Fi second.
 Zero npm dependencies. Node 18+.
 
+## Core principles
+- Every participant controls and sees their own data consumption.
+- Every participant's data allowance and financial constraints remain private.
+- A temporary loss of connectivity should not mean losing the conversation.
+
 ## 1. Why a relay (TURN) is required for mobile data
 Calls go directly between devices when possible. Mobile carriers usually put phones behind carrier-grade NAT,
 which blocks direct connections for a large share of users. Those calls only work through a TURN relay.
@@ -35,8 +40,10 @@ Run locally instead: `node server.js`, then `npx cloudflared tunnel --url http:/
 - Auto quality starts in Saver (360p, 15 fps) on mobile data, or Audio only on 2G; optional MB/hour budget
 - "I am on mobile data" switch (needed on iPhone, which does not report the network type)
 - Recovers from Wi-Fi/mobile switches and short drops (ICE restart, stable reconnect with a 10 s grace period)
+- Conversation Recovery: when connection is interrupted, record a short voice message locally and send it later
 - Keeps the phone screen awake during calls (Screen Wake Lock)
 - Receive video off, Share slides (2 fps), camera fully off, AV1/VP9 preferred, audio capped at 24 kbit/s
+- Live personal data intelligence: measured sent/received usage, average rate, estimated remaining time, private to you
 - Live meter: kbit/s up/down, MB used, direct vs relayed, codec, per-person resolution and fps
 
 ## 4. Testing on mobile conditions
@@ -49,4 +56,8 @@ Run locally instead: `node server.js`, then `npx cloudflared tunnel --url http:/
 - No accounts: anyone with the room link can join. Rooms are random; the link is the password.
 - Browsers pause camera and microphone when a phone locks or the app is backgrounded. Keep the screen on.
 - Screen sharing does not work on phone browsers. Safari ignores some bitrate settings.
+- Conversation Recovery messages are stored locally for the session; full cross-device persistence and encrypted delivery are future work.
 - Not yet verified end-to-end on a live carrier network; the first tester results are the real test.
+
+## Product principle
+Your data belongs to you. Your communication should continue even when your connection doesn't.
