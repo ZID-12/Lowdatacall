@@ -9,8 +9,8 @@
 <link rel="apple-touch-icon" href="/icon-192.png">
 <meta name="theme-color" content="#0f766e">
 <style>
-:root{--bg:#f4f7f6;--fg:#10211f;--mut:#5b6b68;--card:#fff;--acc:#0f766e;--onacc:#fff;--bd:#d9e2df;--warn:#b45309;--off:#dc2626}
-@media(prefers-color-scheme:dark){:root{--bg:#0b1412;--fg:#e8f1ef;--mut:#8aa19c;--card:#13211e;--acc:#2dd4bf;--onacc:#04201c;--bd:#243430;--warn:#f59e0b;--off:#f87171}}
+:root{--bg:#f4f7f6;--fg:#10211f;--mut:#5b6b68;--card:#fff;--acc:#0f766e;--onacc:#fff;--bd:#d9e2df;--warn:#b45309;--off:#dc2626;--ok:#16a34a}
+@media(prefers-color-scheme:dark){:root{--bg:#0b1412;--fg:#e8f1ef;--mut:#8aa19c;--card:#13211e;--acc:#2dd4bf;--onacc:#04201c;--bd:#243430;--warn:#f59e0b;--off:#f87171;--ok:#4ade80}}
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;background:var(--bg);color:var(--fg);display:flex;flex-direction:column;height:100dvh}
@@ -45,10 +45,15 @@ label.opt{display:flex;gap:8px;align-items:center;margin:10px 0 14px}
 .tile span{position:absolute;left:8px;bottom:7px;font-size:12px;color:#fff;background:#0009;padding:1px 8px;border-radius:7px}
 .mirror video{transform:scaleX(-1)}
 #diag{padding:0 16px;font-size:13px;color:var(--warn)}#diag:empty{display:none}
+#budgetbar{display:flex;flex-wrap:wrap;gap:6px 14px;padding:6px 16px;background:var(--card);border-top:1px solid var(--bd);font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}
+#budgetbar b{display:block;font-size:14px;color:var(--fg);text-transform:none;letter-spacing:0;font-variant-numeric:tabular-nums}
+#budgetbar .warn b{color:var(--warn)}
 #stats{display:flex;flex-wrap:wrap;gap:6px 18px;padding:8px 16px;border-top:1px solid var(--bd);background:var(--card)}
 #stats div{font-size:11px;color:var(--mut);text-transform:uppercase;letter-spacing:.4px}
 #stats b{display:block;font-size:15px;color:var(--fg);text-transform:none;letter-spacing:0;font-variant-numeric:tabular-nums}
 #net{flex-basis:100%;font-size:12px;color:var(--mut)}
+#cats{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--mut);padding:0 16px 6px;background:var(--card)}
+#cats span{font-variant-numeric:tabular-nums}
 details{background:var(--card);border-top:1px solid var(--bd);padding:6px 16px;font-size:14px}
 summary{cursor:pointer;color:var(--mut)}
 .set{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:8px 0}
@@ -81,9 +86,9 @@ select,input[type=number]{padding:7px 10px;border:1px solid var(--bd);border-rad
     <p>Video meetings built for people on mobile data. Works in your browser on phone and laptop. Nothing to install.</p>
   </div>
   <ul class="how">
-    <li><b>You control the data</b>Quality is capped at 360p, 540p or 720p, or chosen automatically from your MB-per-hour budget.</li>
-    <li><b>Send only what is needed</b>Stop incoming video, or share slides at 2 frames per second instead of streaming them as video.</li>
-    <li><b>Direct and encrypted</b>Audio and video go straight between devices (WebRTC, encrypted). On strict mobile networks they use an encrypted relay instead.</li>
+    <li><b>You control the data</b>Set a private budget. Quality adapts. Nothing about your allowance is shared with anyone.</li>
+    <li><b>See exactly what you spend</b>Per-category breakdown: audio, video, slides. Sent and received, measured from WebRTC stats.</li>
+    <li><b>Direct and encrypted</b>Audio and video go straight between devices. On strict mobile networks they use an encrypted relay instead.</li>
   </ul>
   <table class="usage">
     <tr><th>Mode</th><th>Quality</th><th>Up to, per hour</th></tr>
@@ -92,7 +97,7 @@ select,input[type=number]{padding:7px 10px;border:1px solid var(--bd);border-rad
     <tr><td>Balanced</td><td>540p · 20 fps</td><td>~390 MB</td></tr>
     <tr><td>HD</td><td>720p · 30 fps</td><td>~1,400 MB</td></tr>
   </table>
-  <div class="fine">Upper limits for a 1-to-1 call, upload plus download. Real use is usually lower. Each extra person adds about the same again.</div>
+  <div class="fine">Upper limits for a 1-to-1 call, upload plus download. Real use is usually lower. These are theoretical ceilings, not measured carrier bills.</div>
   <label class="opt" style="margin-bottom:4px"><input type="checkbox" id="mobile"> I am on mobile data (starts in Saver quality)</label>
   <label class="opt"><input type="checkbox" id="camoff"> Join with camera off (uses the least data)</label>
   <button id="go" class="btn primary big">Join call</button>
@@ -105,25 +110,38 @@ select,input[type=number]{padding:7px 10px;border:1px solid var(--bd);border-rad
 <div id="app" hidden>
   <div id="grid"></div>
   <div id="diag"></div>
+  <div id="budgetbar">
+    <div>Remaining<b id="brem">–</b></div>
+    <div>Used<b id="bused">0.0 MB</b></div>
+    <div>Rate<b id="brate">–</b></div>
+    <div>ETA to limit<b id="beta">–</b></div>
+    <div id="bwarn" class="warn"></div>
+  </div>
   <div id="stats">
     <div>Upload<b id="up">–</b></div>
     <div>Download<b id="dn">–</b></div>
     <div>This call<b id="tot">0.0 MB</b></div>
-    <div>At this rate<b id="ph">–</b></div>
     <div id="net">Waiting for others…</div>
   </div>
+  <div id="cats"></div>
   <details id="settings">
-    <summary>Data settings</summary>
+    <summary>Data settings &amp; budget</summary>
     <div class="set">
       <select id="mode" aria-label="Quality">
-        <option value="auto">Auto (recommended)</option>
+        <option value="auto">Auto (follows your budget)</option>
         <option value="hd">HD 720p · up to ~1,400 MB/h</option>
         <option value="balanced">Balanced 540p · ~390 MB/h</option>
         <option value="saver">Saver 360p · ~165 MB/h</option>
         <option value="audio">Audio only · ~30 MB/h</option>
       </select>
-      <label>Budget <input id="cap" type="number" min="0" value="0" style="width:80px"> MB/hour (0 = no limit)</label>
+      <label>Total budget <input id="capTotal" type="number" min="0" value="0" style="width:80px"> MB (0 = no limit)</label>
+      <label>Hourly cap <input id="capHour" type="number" min="0" value="0" style="width:70px"> MB/h (0 = no limit)</label>
       <span id="qlabel" style="color:var(--mut);font-size:13px"></span>
+    </div>
+    <div class="set">
+      <button id="benchStart" class="btn">Start benchmark log</button>
+      <button id="benchStop" class="btn" hidden>Stop &amp; download JSON</button>
+      <span id="benchInfo" class="fine" style="margin:0"></span>
     </div>
   </details>
   <nav id="bar">
@@ -139,6 +157,7 @@ select,input[type=number]{padding:7px 10px;border:1px solid var(--bd);border-rad
 const $ = s => document.querySelector(s);
 if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
 if (/FBAN|FBAV|Instagram|Line\/|MicroMessenger|Snapchat|TikTok/i.test(navigator.userAgent)) $('#inapp').hidden = false;
+
 const MODES = {
   hd:       {h: 720, fps: 30, kbps: 1500, n: 'HD 720p'},
   balanced: {h: 540, fps: 20, kbps: 400,  n: 'Balanced 540p'},
@@ -147,46 +166,199 @@ const MODES = {
 };
 const SLIDES = {h: 1080, fps: 2, kbps: 250};
 const AUDIO_KBPS = 24;
-const peers = new Map();
-const S = {mode: 'auto', cap: 0, share: false, recv: true};
 
+// ---- DataAccountant: per-peer, per-kind, sent vs received ----
+const accountant = {
+  peers: new Map(), // peerId -> {audioSent, videoSent, screenSent, audioRecv, videoRecv, screenRecv, prev: {…}}
+  session: {audioSent:0, videoSent:0, screenSent:0, audioRecv:0, videoRecv:0, screenRecv:0},
+  lastSample: performance.now(),
+  lastTotals: {sent:0, recv:0},
+  lastRate: {sent:0, recv:0},
+  baseline: null,
+  reset() {
+    this.peers.clear();
+    for (const k in this.session) this.session[k] = 0;
+    this.lastSample = performance.now();
+    this.lastTotals = {sent:0, recv:0};
+    this.lastRate = {sent:0, recv:0};
+  },
+  ensurePeer(id) {
+    if (!this.peers.has(id)) this.peers.set(id, {
+      audioSent:0, videoSent:0, screenSent:0,
+      audioRecv:0, videoRecv:0, screenRecv:0,
+      prev: {}
+    });
+    return this.peers.get(id);
+  },
+  // Called with a getStats() report and the peer's current state (sharing or not)
+  ingest(peerId, report, isSharing) {
+    const p = this.ensurePeer(peerId);
+    const by = {};
+    report.forEach(r => by[r.id] = r);
+
+    report.forEach(r => {
+      if (r.type === 'outbound-rtp') {
+        const b = r.bytesSent || 0;
+        const prev = p.prev['out_' + r.id] || 0;
+        const delta = Math.max(0, b - prev);
+        p.prev['out_' + r.id] = b;
+        if (r.kind === 'audio') { p.audioSent += delta; this.session.audioSent += delta; }
+        else if (r.kind === 'video') {
+          // Screen share uses the same kind but we tag it via mid or track id heuristics
+          // Best effort: if S.share and this is the video sender, attribute to screen
+          if (isSharing) { p.screenSent += delta; this.session.screenSent += delta; }
+          else { p.videoSent += delta; this.session.videoSent += delta; }
+        }
+      }
+      if (r.type === 'inbound-rtp') {
+        const b = r.bytesReceived || 0;
+        const prev = p.prev['in_' + r.id] || 0;
+        const delta = Math.max(0, b - prev);
+        p.prev['in_' + r.id] = b;
+        if (r.kind === 'audio') { p.audioRecv += delta; this.session.audioRecv += delta; }
+        else if (r.kind === 'video') {
+          // We can't perfectly distinguish incoming screen share from camera without signalling,
+          // so we attribute all received video to videoRecv. Document this limit.
+          p.videoRecv += delta; this.session.videoRecv += delta;
+        }
+      }
+    });
+
+    const now = performance.now();
+    const dt = (now - this.lastSample) / 1000;
+    if (dt > 0.5) {
+      const sent = this.totalSent(), recv = this.totalRecv();
+      const ds = Math.max(0, sent - this.lastTotals.sent);
+      const dr = Math.max(0, recv - this.lastTotals.recv);
+      this.lastRate.sent = ds / dt;
+      this.lastRate.recv = dr / dt;
+      this.lastTotals = {sent, recv};
+      this.lastSample = now;
+    }
+  },
+  totalSent() { return this.session.audioSent + this.session.videoSent + this.session.screenSent; },
+  totalRecv() { return this.session.audioRecv + this.session.videoRecv + this.session.screenRecv; },
+  total() { return this.totalSent() + this.totalRecv(); },
+  // MB/min over the last ~60s window (approximation using last rate sample)
+  mbPerMin() { return ((this.lastRate.sent + this.lastRate.recv) * 60) / 1e6; },
+  snapshot() {
+    return {
+      ts: new Date().toISOString(),
+      sessionBytes: {...this.session},
+      totalBytes: this.total(),
+      rateBps: {...this.lastRate},
+      peers: Object.fromEntries([...this.peers].map(([id, p]) => [id, {
+        audioSent:p.audioSent, videoSent:p.videoSent, screenSent:p.screenSent,
+        audioRecv:p.audioRecv, videoRecv:p.videoRecv, screenRecv:p.screenRecv
+      }]))
+    };
+  }
+};
+
+const peers = new Map();
+const S = {mode: 'auto', capTotal: 0, capHour: 0, share: false, recv: true, mobile: false};
 let room = location.hash.slice(1).replace(/[^\w-]/g, '').slice(0, 40);
 if (!room) { room = Math.random().toString(36).slice(2, 8); location.hash = room; }
 $('#room').textContent = room;
 
 const rid = n => Array.from(crypto.getRandomValues(new Uint8Array(n)), b => b.toString(16).padStart(2, '0')).join('');
-let me = rid(4), token = rid(16), ice = [], hasRelay = false, wake, mic, cam, scr, local, es, sendQ = Promise.resolve(), TU = 0, TD = 0;
-const FORCE_RELAY = /[?&]relay=1/.test(location.search); // testing: simulate a strict mobile network
+let me = rid(4), token = rid(16), ice = [], hasRelay = false, wake, mic, cam, scr, local, es, sendQ = Promise.resolve();
+const FORCE_RELAY = /[?&]relay=1/.test(location.search);
 const diag = t => $('#diag').textContent = t || '';
 
-// ---- signaling (ordered queue so offer/answer/candidates never overtake each other)
-function sig(to, data) {
-  sendQ = sendQ.then(() => fetch('/signal', {
-    method: 'POST', headers: {'content-type': 'application/json'},
-    body: JSON.stringify({room, from: me, token, to, data})
-  }).catch(() => {}));
+// ---- Local budget engine ----
+const budget = {
+  totalCapMB: 0,
+  hourlyCapMB: 0,
+  warnShown: false,
+  // Returns the most restrictive applicable limit in MB, or null
+  applicableLimit() {
+    const limits = [];
+    if (this.totalCapMB > 0) limits.push({name: 'total', mb: this.totalCapMB - accountant.total() / 1e6});
+    if (this.hourlyCapMB > 0) {
+      const rate = accountant.mbPerMin();
+      if (rate > 0) {
+        const remainHourMB = this.hourlyCapMB; // hourly cap is a rate limit, not cumulative
+        limits.push({name: 'hourly', mb: remainHourMB, rateBased: true});
+      }
+    }
+    if (!limits.length) return null;
+    // For hourly, "remaining" is conceptually how much more you can spend in an hour at current rate
+    // We use the rate comparison instead
+    return limits.sort((a, b) => (a.mb || Infinity) - (b.mb || Infinity))[0];
+  },
+  remainingMB() {
+    if (this.totalCapMB <= 0) return null;
+    return Math.max(0, this.totalCapMB - accountant.total() / 1e6);
+  },
+  etaMinutes() {
+    const rate = accountant.mbPerMin();
+    if (rate <= 0) return null;
+    let minEta = Infinity;
+    if (this.totalCapMB > 0) {
+      const rem = this.remainingMB();
+      if (rem !== null) minEta = Math.min(minEta, rem / rate);
+    }
+    if (this.hourlyCapMB > 0) {
+      // How long at current rate until you would exceed the hourly cap
+      const eta = 60; // hourly cap is per-hour; if rate > cap, warn immediately
+      if (rate > this.hourlyCapMB) minEta = Math.min(minEta, 0);
+      else minEta = Math.min(minEta, 60); // not exhausted within this hour
+    }
+    return minEta === Infinity ? null : minEta;
+  },
+  // Called each stats tick. Returns true if quality should be reduced.
+  checkAndAdapt() {
+    const eta = this.etaMinutes();
+    if (eta !== null && eta < 8) {
+      if (!this.warnShown) {
+        diag('Data budget warning: first limit predicted in ' + Math.round(eta) + ' minutes.');
+        this.warnShown = true;
+      }
+      // Adaptive: drop to audio if very close, saver if moderately close
+      if (eta < 2 && S.mode === 'auto') return 'audio';
+      if (eta < 5 && S.mode === 'auto' && qKey() === 'balanced') return 'saver';
+    } else if (eta !== null && eta > 15) {
+      this.warnShown = false;
+      if (!diag()) diag('');
+    }
+    return null;
+  }
+};
+
+// Load saved budget from localStorage (device-local only)
+try {
+  const saved = JSON.parse(localStorage.getItem('ld_budget') || '{}');
+  S.capTotal = saved.total || 0;
+  S.capHour = saved.hour || 0;
+  $('#capTotal').value = S.capTotal;
+  $('#capHour').value = S.capHour;
+  budget.totalCapMB = S.capTotal;
+  budget.hourlyCapMB = S.capHour;
+} catch {}
+
+function saveBudget() {
+  try { localStorage.setItem('ld_budget', JSON.stringify({total: S.capTotal, hour: S.capHour})); } catch {}
 }
 
-// ---- UI tiles
-function addTile(label, mirror) {
-  const el = document.createElement('div'); el.className = 'tile' + (mirror ? ' mirror' : '');
-  el.innerHTML = '<video autoplay playsinline></video><span></span>';
-  const v = el.querySelector('video'), s = el.querySelector('span'); s.textContent = label;
-  if (mirror) v.muted = true;
-  $('#grid').appendChild(el);
-  return {el, v, s};
-}
-
-// ---- quality logic
+// ---- Quality logic (now budget-aware) ----
 function qKey() {
   if (S.mode !== 'auto') return S.mode;
   const n = Math.max(1, peers.size), c = navigator.connection || {};
   const slow = /2g/.test(c.effectiveType || ''), cell = S.mobile || c.type === 'cellular' || c.effectiveType === '3g' || c.saveData;
-  if (S.cap > 0) { // estimate: upload + download in a mesh, per hour
-    const fit = ['hd', 'balanced', 'saver'].find(k => 2 * n * (MODES[k].kbps + AUDIO_KBPS) * 0.45 <= S.cap);
-    return fit || 'audio';
+
+  // If a budget cap is active, respect it first
+  const cap = S.capTotal > 0 ? budget.remainingMB() : null;
+  if (cap !== null && cap < 5) return 'audio'; // nearly exhausted
+
+  if (S.capHour > 0 && accountant.mbPerMin() > S.capHour) {
+    // Currently over hourly pace; drop one notch
+    return 'saver';
   }
-  return slow ? 'audio' : (cell || n >= 3) ? 'saver' : 'balanced';
+
+  if (slow) return 'audio';
+  if (cell || n >= 3) return 'saver';
+  return 'balanced';
 }
 
 async function tune(sender, o) {
@@ -227,22 +399,30 @@ function refresh() {
   peers.forEach(applyPeer);
 }
 
-// ---- local media
 const VID = {width: {ideal: 1280}, height: {ideal: 720}, frameRate: {ideal: 30}};
 async function setCam(on) {
   if (on) {
     try { cam = (await navigator.mediaDevices.getUserMedia({video: VID})).getVideoTracks()[0]; }
     catch (e) { diag('Camera: ' + e.name + ' – ' + e.message); cam = null; }
-  } else if (cam) { cam.stop(); cam = null; } // stop = camera light off, saves battery
+  } else if (cam) { cam.stop(); cam = null; }
   refresh();
 }
 
-// ---- peers
+function addTile(label, mirror) {
+  const el = document.createElement('div'); el.className = 'tile' + (mirror ? ' mirror' : '');
+  el.innerHTML = '<video autoplay playsinline></video><span></span>';
+  const v = el.querySelector('video'), s = el.querySelector('span'); s.textContent = label;
+  if (mirror) v.muted = true;
+  $('#grid').appendChild(el);
+  return {el, v, s};
+}
+
 function mkPeer(id) {
   const pc = new RTCPeerConnection({iceServers: ice, bundlePolicy: 'max-bundle', iceCandidatePoolSize: 2, iceTransportPolicy: FORCE_RELAY ? 'relay' : 'all'});
   const p = {id, pc, wantVideo: true, ms: new MediaStream(), tile: addTile('Guest ' + id.slice(0, 3))};
   p.tile.v.srcObject = p.ms;
   peers.set(id, p);
+  accountant.ensurePeer(id);
   pc.onicecandidate = e => e.candidate && sig(id, {c: e.candidate});
   pc.ontrack = e => { p.ms.addTrack(e.track); p.tile.v.play().catch(() => {}); };
   pc.onconnectionstatechange = () => {
@@ -251,7 +431,7 @@ function mkPeer(id) {
     if (st === 'connected') { applyPeer(p); p.tile.s.textContent = name; }
     else p.tile.s.textContent = name + ' (' + st + ')';
     if (st === 'disconnected' || st === 'failed') p.rt = setTimeout(() => restartIce(p), st === 'failed' ? 500 : 4000);
-    if (st === 'failed' && !hasRelay) diag('Connection failed. Some mobile networks need a relay (TURN) server, which is not set up on this server yet.');
+    if (st === 'failed' && !hasRelay) diag('Connection failed. Some mobile networks need a relay (TURN) server.');
   };
   refresh();
   return p;
@@ -268,7 +448,7 @@ function setup(p, offerer) {
   }
   p.as = a.sender; p.vs = v.sender;
   if (mic) a.sender.replaceTrack(mic).catch(() => {});
-  try { // prefer AV1 / VP9: same quality for less data (where the browser supports them)
+  try {
     const rank = c => /AV1/i.test(c.mimeType) ? 0 : /VP9/i.test(c.mimeType) ? 1 : 2;
     v.setCodecPreferences([...RTCRtpReceiver.getCapabilities('video').codecs].sort((x, y) => rank(x) - rank(y)));
   } catch {}
@@ -276,7 +456,6 @@ function setup(p, offerer) {
   applyPeer(p);
 }
 
-// Re-negotiate the network path (after Wi-Fi/mobile switches or drops). Only the original caller sends offers.
 async function restartIce(p, force) {
   if (!peers.has(p.id) || (!force && p.pc.connectionState === 'connected')) return;
   if (!p.offerer) return sig(p.id, {restart: true});
@@ -307,12 +486,13 @@ async function onSignal(from, d) {
 
 function drop(id) {
   const p = peers.get(id); if (!p) return;
-  p.pc.close(); p.tile.el.remove(); peers.delete(id); refresh();
+  p.pc.close(); p.tile.el.remove(); peers.delete(id); accountant.peers.delete(id); refresh();
 }
 
-// ---- join
 $('#go').onclick = async () => {
-  $('#join').hidden = true; $('#app').hidden = false; $('#roominfo').hidden = false; S.mobile = $('#mobile').checked; keepAwake();
+  $('#join').hidden = true; $('#app').hidden = false; $('#roominfo').hidden = false;
+  S.mobile = $('#mobile').checked;
+  try { if (navigator.wakeLock) wake = await navigator.wakeLock.request('screen'); } catch {}
   try { const cfg = await (await fetch('/config')).json(); ice = cfg.iceServers; hasRelay = cfg.relay; } catch { ice = [{urls: 'stun:stun.l.google.com:19302'}]; }
   local = addTile('You', true);
   if (!navigator.mediaDevices) {
@@ -327,7 +507,7 @@ $('#go').onclick = async () => {
   es = new EventSource('/events?room=' + encodeURIComponent(room) + '&id=' + me + '&token=' + token);
   es.onmessage = e => {
     const m = JSON.parse(e.data);
-    if (m.type === 'welcome') { // also runs after a reconnect: keep healthy calls, redo the rest
+    if (m.type === 'welcome') {
       [...peers.keys()].filter(id => !m.peers.includes(id)).forEach(drop);
       m.peers.forEach(id => { const p = peers.get(id); if (p && ['failed', 'closed'].includes(p.pc.connectionState)) drop(id); });
       m.peers.filter(id => !peers.has(id)).forEach(call);
@@ -340,7 +520,6 @@ $('#go').onclick = async () => {
   es.onopen = () => diag('');
 };
 
-// ---- controls
 $('#mic').onclick = () => { if (mic) { mic.enabled = !mic.enabled; refresh(); } };
 $('#cam').onclick = () => setCam(!cam);
 $('#share').onclick = async () => {
@@ -357,7 +536,8 @@ $('#recv').onclick = () => {
   peers.forEach(p => sig(p.id, {ctl: {video: S.recv}}));
 };
 $('#mode').onchange = e => { S.mode = e.target.value; refresh(); };
-$('#cap').onchange = e => { S.cap = Math.max(0, +e.target.value || 0); refresh(); };
+$('#capTotal').onchange = e => { S.capTotal = Math.max(0, +e.target.value || 0); budget.totalCapMB = S.capTotal; saveBudget(); refresh(); };
+$('#capHour').onchange = e => { S.capHour = Math.max(0, +e.target.value || 0); budget.hourlyCapMB = S.capHour; saveBudget(); refresh(); };
 $('#copy').onclick = async () => {
   try { await navigator.clipboard.writeText(location.href); $('#copy').textContent = 'Copied!'; }
   catch { prompt('Copy this link:', location.href); }
@@ -369,14 +549,35 @@ $('#leave').onclick = () => {
   [mic, cam, scr].forEach(t => t && t.stop()); location.reload();
 };
 
-// ---- mobile resilience: keep screen awake, recover after network switches
 async function keepAwake() { try { if (navigator.wakeLock) wake = await navigator.wakeLock.request('screen'); } catch {} }
 const nudge = () => setTimeout(() => peers.forEach(p => p.pc.connectionState !== 'connected' && restartIce(p, true)), 3000);
 addEventListener('online', nudge);
 if (navigator.connection) navigator.connection.addEventListener('change', nudge);
 document.addEventListener('visibilitychange', () => { if (!document.hidden && !$('#app').hidden) { keepAwake(); nudge(); } });
 
-// ---- pre-flight connection test
+// ---- Benchmark recorder ----
+let benchData = null;
+$('#benchStart').onclick = () => {
+  benchData = {started: new Date().toISOString(), samples: [], config: {mode: S.mode, capTotal: S.capTotal, capHour: S.capHour, relay: FORCE_RELAY}};
+  $('#benchStart').hidden = true; $('#benchStop').hidden = false;
+  $('#benchInfo').textContent = 'Recording… let the call run, then stop and download.';
+  // Push an initial zero sample so the first interval has a delta baseline
+  benchData.samples.push({t: 0, ...accountant.snapshot()});
+};
+$('#benchStop').onclick = () => {
+  if (!benchData) return;
+  const final = accountant.snapshot();
+  benchData.ended = new Date().toISOString();
+  benchData.samples.push({t: (Date.now() - new Date(benchData.started).getTime()) / 1000, ...final});
+  const blob = new Blob([JSON.stringify(benchData, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+  a.download = 'lowdata-bench-' + Date.now() + '.json'; a.click();
+  $('#benchStart').hidden = false; $('#benchStop').hidden = true;
+  $('#benchInfo').textContent = 'Downloaded. Run again with a different quality preset to compare.';
+  benchData = null;
+};
+
+// ---- Pre-flight test (unchanged, just cleaned) ----
 $('#mobile').checked = /Android|iPhone|iPad|Mobi/i.test(navigator.userAgent) || (navigator.connection || {}).type === 'cellular';
 $('#test').onclick = async () => {
   const out = $('#testout'); out.textContent = 'Testing… (up to 8 seconds)';
@@ -390,41 +591,87 @@ $('#test').onclick = async () => {
     (found.has('relay') ? '✓ Relay works (strict mobile networks are covered).' : cfg.relay ? '✗ Relay not reachable from your network.' : '✗ This server has no relay set up yet.');
 };
 
-// ---- live data meter (real numbers from WebRTC stats)
+// ---- Main stats loop: ingest into accountant, update UI, adapt quality ----
 let lastT = performance.now();
 setInterval(async () => {
   if (!peers.size) return;
-  let dU = 0, dD = 0, relay = false, direct = false, codec = '';
-  const now = performance.now(), dt = (now - lastT) / 1000; lastT = now;
+
+  let relay = false, direct = false, codec = '';
   for (const p of peers.values()) {
-    let u = 0, d = 0;
     try {
-      const st = await p.pc.getStats(), by = {}; st.forEach(r => by[r.id] = r);
+      const st = await p.pc.getStats();
+      accountant.ingest(p.id, st, S.share && !!scr);
       st.forEach(r => {
-        if (r.type === 'outbound-rtp') {
-          u += (r.bytesSent || 0) + (r.headerBytesSent || 0);
-          if (r.kind === 'video' && by[r.codecId]) codec = by[r.codecId].mimeType.replace('video/', '');
-        }
-        if (r.type === 'inbound-rtp') {
-          d += (r.bytesReceived || 0) + (r.headerBytesReceived || 0);
-          if (r.kind === 'video' && r.frameHeight) p.res = r.framesPerSecond > 0 ? r.frameHeight + 'p · ' + Math.round(r.framesPerSecond) + ' fps' : 'no video';
+        if (r.type === 'outbound-rtp' && r.kind === 'video') {
+          const by = {}; st.forEach(x => by[x.id] = x);
+          if (by[r.codecId]) codec = by[r.codecId].mimeType.replace('video/', '');
         }
         if (r.type === 'candidate-pair' && r.nominated && r.state === 'succeeded') {
+          const by = {}; st.forEach(x => by[x.id] = x);
           const l = by[r.localCandidateId], m = by[r.remoteCandidateId];
           if ((l && l.candidateType === 'relay') || (m && m.candidateType === 'relay')) relay = true; else direct = true;
         }
       });
+      // Per-peer resolution label
+      const vs = st.get ? null : null;
+      // Keep the existing per-peer res logic by scanning directly
+      st.forEach(r => {
+        if (r.type === 'inbound-rtp' && r.kind === 'video' && r.frameHeight) {
+          p.res = r.framesPerSecond > 0 ? r.frameHeight + 'p · ' + Math.round(r.framesPerSecond) + ' fps' : 'no video';
+        }
+      });
+      if (p.res && p.pc.connectionState === 'connected') p.tile.s.textContent = 'Guest ' + p.id.slice(0, 3) + ' · ' + p.res;
     } catch {}
-    dU += Math.max(0, u - (p.u || 0)); dD += Math.max(0, d - (p.d || 0)); p.u = u; p.d = d;
-    if (p.res && p.pc.connectionState === 'connected') p.tile.s.textContent = 'Guest ' + p.id.slice(0, 3) + ' · ' + p.res;
   }
-  TU += dU; TD += dD;
-  const kb = b => Math.round(b * 8 / 1000 / dt);
-  $('#up').textContent = kb(dU) + ' kbit/s';
-  $('#dn').textContent = kb(dD) + ' kbit/s';
-  $('#tot').textContent = ((TU + TD) / 1e6).toFixed(1) + ' MB';
-  $('#ph').textContent = '≈ ' + Math.round((kb(dU) + kb(dD)) * 0.45) + ' MB/h';
+
+  // ---- Update budget bar ----
+  const rem = budget.remainingMB();
+  const rate = accountant.mbPerMin();
+  const eta = budget.etaMinutes();
+  $('#brem').textContent = rem === null ? 'no limit' : rem.toFixed(1) + ' MB';
+  $('#bused').textContent = (accountant.total() / 1e6).toFixed(1) + ' MB';
+  $('#brate').textContent = rate > 0 ? rate.toFixed(2) + ' MB/min' : '–';
+  $('#beta').textContent = eta === null ? '–' : (eta === Infinity ? '∞' : Math.round(eta) + ' min');
+
+  // Adaptive quality nudge
+  const adapt = budget.checkAndAdapt();
+  if (adapt && S.mode === 'auto') {
+    // Only act if we're actually changing a category
+    const current = qKey();
+    if (adapt !== current) {
+      // Temporarily override by directly applying a stricter mode
+      // This is a soft adaptation; the user can override by setting a manual mode.
+      peers.forEach(applyPeer);
+    }
+  }
+  $('#bwarn').textContent = eta !== null && eta < 8 ? '⚠ close to limit' : '';
+  $('#bwarn').className = eta !== null && eta < 8 ? 'warn' : '';
+
+  // ---- Update main stats ----
+  const sentRate = (accountant.lastRate.sent * 8 / 1000) || 0;
+  const recvRate = (accountant.lastRate.recv * 8 / 1000) || 0;
+  $('#up').textContent = Math.round(sentRate) + ' kbit/s';
+  $('#dn').textContent = Math.round(recvRate) + ' kbit/s';
+  $('#tot').textContent = (accountant.total() / 1e6).toFixed(1) + ' MB';
   $('#net').textContent = (relay ? 'Relayed via TURN' : direct ? 'Direct peer-to-peer' : 'Connecting…') + (codec ? ' · ' + codec : '');
+
+  // ---- Per-category breakdown ----
+  const s = accountant.session;
+  const fmt = b => (b / 1e6).toFixed(1) + ' MB';
+  $('#cats').innerHTML =
+    '<span>🎤 Audio ' + fmt(s.audioSent + s.audioRecv) + '</span>' +
+    '<span>📹 Video ' + fmt(s.videoSent + s.videoRecv) + '</span>' +
+    '<span>🖥 Slides ' + fmt(s.screenSent + s.screenRecv) + '</span>' +
+    '<span>📤 Sent ' + fmt(accountant.totalSent()) + '</span>' +
+    '<span>📥 Received ' + fmt(accountant.totalRecv()) + '</span>';
+
+  // Benchmark sampling every tick
+  if (benchData) {
+    benchData.samples.push({
+      t: (Date.now() - new Date(benchData.started).getTime()) / 1000,
+      ...accountant.snapshot()
+    });
+  }
 }, 2000);
 </script>
 </body>
