@@ -2,8 +2,6 @@
 // Media is peer-to-peer; when a network blocks direct routes (common on mobile data) it flows via a TURN relay.
 const http = require('http'), fs = require('fs'), path = require('path'), crypto = require('crypto');
 const E = process.env, PORT = E.PORT || 3000, MAX_PEERS = 6, GRACE_MS = 10000;
-// Web files live in ./public, or next to server.js if they were uploaded flat (e.g. via the GitHub web uploader)
-const WEB = fs.existsSync(path.join(__dirname, 'public', 'index.html')) ? path.join(__dirname, 'public') : __dirname;
 const rooms = new Map(); // room -> Map(id -> {res, token, timer})
 const push = (res, o) => res.write('data: ' + JSON.stringify(o) + '\n\n');
 
@@ -49,7 +47,7 @@ http.createServer(async (req, res) => {
   const u = new URL(req.url, 'http://x');
   if (u.pathname === '/') {
     res.writeHead(200, {'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache'});
-    return res.end(fs.readFileSync(path.join(WEB, 'index.html')));
+    return res.end(fs.readFileSync(path.join(__dirname, 'index.html')));
   }
   if (u.pathname === '/health') { res.writeHead(200); return res.end('ok'); }
   if (u.pathname === '/config') {
@@ -88,7 +86,7 @@ http.createServer(async (req, res) => {
   }
   if (FILES[u.pathname]) {
     res.writeHead(200, {'Content-Type': FILES[u.pathname], 'Cache-Control': 'no-cache'});
-    return res.end(fs.readFileSync(path.join(WEB, u.pathname)));
+    return res.end(fs.readFileSync(path.join(__dirname, u.pathname)));
   }
   res.writeHead(404); res.end('Not found');
 }).listen(PORT, async () => {
